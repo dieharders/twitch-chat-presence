@@ -20,7 +20,8 @@ var chat = document.getElementById('chat'),
 			clientId: '<your-app-client-id>'
 		},
 		connections: {
-			reconnect: true
+			reconnect: true,
+			secure: true
 		},
 		identity: {
 			username: '<your-bot-username>',
@@ -459,18 +460,20 @@ function login() {
 	// Validate entries
 	var ch = document.forms["loginForm"]["channel-name"].value;
 	var cid = document.forms["loginForm"]["client-id"].value;	
-	var usr = document.forms["loginForm"]["username"].value;
+	//var usr = document.forms["loginForm"]["username"].value;
 	var pss = document.forms["loginForm"]["password"].value;
-	if (ch == "" || cid == "" || usr == "" || pss == "")
+
+	if (ch == "" || cid == "" || pss == "")
 	{
 		alert("Please input a Value");
 	} else {
+		console.log('Accepted');
 		// Input Accepted
 		//
 		// Set vars
 		channels.push( (document.getElementById("channel").value).toLowerCase() );
 		clientOptions.options.clientId = document.getElementById("client").value;
-		clientOptions.identity.username = (document.getElementById("uname").value).toLowerCase();
+		//clientOptions.identity.username = (document.getElementById("uname").value).toLowerCase();
 		clientOptions.identity.password = document.getElementById("pword").value;
 
 		//** Execute **//
