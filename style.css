@@ -24,7 +24,7 @@ p {
 	padding: 32px;
 	margin: auto;
 	margin-top: 14px;
-	background-image: url('twitch-logo.png');
+	background-image: url('twitchlogo.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: calc(50% - 32px), 50%;
