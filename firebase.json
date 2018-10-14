@@ -2,6 +2,8 @@
   "hosting": {
     "public": "./",
     "ignore": [
+      ".env",
+      "**/.git/**",
       "firebase.json",
       "**/.*",
       "**/node_modules/**"

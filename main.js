@@ -456,18 +456,33 @@ function hideMe(ele) {
 }
 // Login //
 function login() {
-    // Set vars
-	channels.push( (document.getElementById("channel").value).toLowerCase() );
-    clientOptions.options.clientId = document.getElementById("client").value;
-    clientOptions.identity.username = (document.getElementById("uname").value).toLowerCase();
-    clientOptions.identity.password = document.getElementById("pword").value;
+	// Validate entries
+	var ch = document.forms["loginForm"]["channel-name"].value;
+	var cid = document.forms["loginForm"]["client-id"].value;	
+	var usr = document.forms["loginForm"]["username"].value;
+	var pss = document.forms["loginForm"]["password"].value;
+	if (ch == "" || cid == "" || usr == "" || pss == "")
+	{
+		alert("Please input a Value");
+		return false;
+	}
+	else 
+	{
+		// Input Accepted
+		alert('Accepted. Logging in...');
+		// Set vars
+		channels.push( (document.getElementById("channel").value).toLowerCase() );
+		clientOptions.options.clientId = document.getElementById("client").value;
+		clientOptions.identity.username = (document.getElementById("uname").value).toLowerCase();
+		clientOptions.identity.password = document.getElementById("pword").value;
 
-    //** Execute **//
-    client.connect();
+		//** Execute **//
+		client.connect();
 
-    // Show App
-    document.getElementById('container').style.display = 'flex';
-    document.getElementById('button-container').style.display = 'block';
-    // Hide login
-	document.getElementById('login').style.display = 'none';
+		// Show App
+		document.getElementById('container').style.display = 'flex';
+		document.getElementById('button-container').style.display = 'block';
+		// Hide login
+		document.getElementById('login').style.display = 'none';
+	}
 }
