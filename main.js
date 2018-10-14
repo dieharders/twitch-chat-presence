@@ -464,7 +464,6 @@ function login() {
 	if (ch == "" || cid == "" || usr == "" || pss == "")
 	{
 		alert("Please input a Value");
-		return false;
 	}
 	else 
 	{
