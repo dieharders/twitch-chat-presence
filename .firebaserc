@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "twitch-chat-presence"
+  }
+}
