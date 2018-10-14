@@ -464,11 +464,9 @@ function login() {
 	if (ch == "" || cid == "" || usr == "" || pss == "")
 	{
 		alert("Please input a Value");
-	}
-	else 
-	{
+	} else {
 		// Input Accepted
-		alert('Accepted. Logging in...');
+		//
 		// Set vars
 		channels.push( (document.getElementById("channel").value).toLowerCase() );
 		clientOptions.options.clientId = document.getElementById("client").value;
