@@ -35,19 +35,19 @@ function dehash(channel) {
 }
 
 function capitalize(n) {
-	return n[0].toUpperCase() +  n.substr(1);
+	return n[0].toUpperCase() + n.substr(1);
 }
 
 function htmlEntities(html) {
 	function it() {
 		return html.map(function(n, i, arr) {
-				if(n.length == 1) {
-					return n.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-						   return '&#'+i.charCodeAt(0)+';';
-						});
-				}
-				return n;
-			});
+			if(n.length == 1) {
+				return n.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+						return '&#'+i.charCodeAt(0)+';';
+					});
+			}
+			return n;
+		});
 	}
 	var isArray = Array.isArray(html);
 	if(!isArray) {
