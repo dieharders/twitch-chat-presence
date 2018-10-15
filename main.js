@@ -17,15 +17,15 @@ var chat = document.getElementById('chat'),
 	clientOptions = {
 		options: {
 			debug: true,
-			clientId: '<your-app-client-id>'
+			clientId: '' //<your-app-client-id> *Needed if you want to post messages for another account
 		},
 		connections: {
 			reconnect: true,
 			secure: true
 		},
 		identity: {
-			username: '<your-bot-username>',
-			password: 'oath:<your-bot-password>'
+			username: 'justinfan123', //Anon account
+			password: 'oath:' //oath:<your-bot-oauth>
 		},
 		channels: channels
 	},
@@ -410,7 +410,7 @@ client.addListener('join', function (channel, username) {
 	if(username != client.getUsername()) {
 		//if(showConnectionNotices) chatNotice('Joined ' + capitalize(dehash(channel)) + ' => ' + username, 1000, -1, 'chat-room-join');
 		joinAccounced.push(channel);
-
+		SoundJoin.play();
 		addChattersList(username);
 	}
 });
@@ -420,6 +420,7 @@ client.addListener('part', function (channel, username) {
 	if(index > -1) {
 		//if(showConnectionNotices) chatNotice('Parted ' + capitalize(dehash(channel)) + ' => ' + username, 1000, 3, 'chat-room-part');
 		joinAccounced.splice(joinAccounced.indexOf(channel), 1);
+		SoundLeave.play();
 	}
 
 	removeChattersList(username);
@@ -436,8 +437,19 @@ client.addListener('crash', function () {
 	chatNotice('Crashed', 10000, 4, 'chat-crash');
 });
 
+// Audio //
+//
+var audioMute = false;
+var SoundJoin = new Audio('http://www.chiptape.com/chiptape/sounds/medium/SOIF_blue5c.wav');
+SoundJoin.volume=0.5
+var Soundleave = new Audio('http://princezze.free.fr/sounds/bhump.wav');
+Soundleave.volume=0.7
+var SoundMessage = new Audio('http://stephane.brechet.free.fr/Sons/MP3/BUBBLE.mp3');
+SoundMessage.volume=0.5
+
 //////////////////////
 // Buttons
+//
 function hideMe(ele) {
 	var e = document.getElementById(ele); //ele.children[0].id
 	var dis = e.style.display;
@@ -459,11 +471,11 @@ function hideMe(ele) {
 function login() {
 	// Validate entries
 	var ch = document.forms["loginForm"]["channel-name"].value;
-	var cid = document.forms["loginForm"]["client-id"].value;	
+	//var cid = document.forms["loginForm"]["client-id"].value;	
 	//var usr = document.forms["loginForm"]["username"].value;
-	var pss = document.forms["loginForm"]["password"].value;
+	//var pss = document.forms["loginForm"]["password"].value;
 
-	if (ch == "" || cid == "" || pss == "")
+	if (ch == "") //|| cid == "" || pss == "" || usr == ""
 	{
 		alert("Please input a Value");
 	} else {
@@ -472,9 +484,9 @@ function login() {
 		//
 		// Set vars
 		channels.push( (document.getElementById("channel").value).toLowerCase() );
-		clientOptions.options.clientId = document.getElementById("client").value;
+		//clientOptions.options.clientId = document.getElementById("client").value;
 		//clientOptions.identity.username = (document.getElementById("uname").value).toLowerCase();
-		clientOptions.identity.password = document.getElementById("pword").value;
+		//clientOptions.identity.password = document.getElementById("pword").value;
 
 		//** Execute **//
 		client.connect();
