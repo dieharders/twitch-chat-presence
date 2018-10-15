@@ -19,7 +19,7 @@ var chat = document.getElementById('chat'),
 			debug: true,
 			clientId: '' //<your-app-client-id> *Needed if you want to post messages for another account
 		},
-		connections: {
+		connection: {
 			reconnect: true,
 			secure: true
 		},
@@ -225,6 +225,7 @@ function lookUpChatterStatus(name) {
 }
 
 function handleChat(channel, user, message, self) {
+	playAudio(SoundMessage);
 	let div = document.getElementById('uber-chat');
 
 	var chan = dehash(channel),
@@ -300,8 +301,12 @@ function handleChat(channel, user, message, self) {
 		for(var i in oldMessages) oldMessages[i].remove();
 	}
 
-	// Scroll to bottom of page
-	div.scrollTo(0, div.scrollTop = div.scrollHeight);
+	// Auto Scroll to bottom of page if already at bottom
+	let scrollH = (div.scrollTop + div.offsetHeight)+60;	
+	if (scrollH >= div.scrollHeight || div.offsetHeight == div.scrollHeight)
+	{
+		div.scrollTo(0, div.scrollHeight);	
+	}
 }
 
 function chatNotice(information, noticeFadeDelay, level, additionalClasses) {
@@ -410,7 +415,7 @@ client.addListener('join', function (channel, username) {
 	if(username != client.getUsername()) {
 		//if(showConnectionNotices) chatNotice('Joined ' + capitalize(dehash(channel)) + ' => ' + username, 1000, -1, 'chat-room-join');
 		joinAccounced.push(channel);
-		SoundJoin.play();
+		playAudio(SoundJoin);
 		addChattersList(username);
 	}
 });
@@ -420,7 +425,7 @@ client.addListener('part', function (channel, username) {
 	if(index > -1) {
 		//if(showConnectionNotices) chatNotice('Parted ' + capitalize(dehash(channel)) + ' => ' + username, 1000, 3, 'chat-room-part');
 		joinAccounced.splice(joinAccounced.indexOf(channel), 1);
-		SoundLeave.play();
+		playAudio(SoundLeave);
 	}
 
 	removeChattersList(username);
@@ -437,20 +442,26 @@ client.addListener('crash', function () {
 	chatNotice('Crashed', 10000, 4, 'chat-crash');
 });
 
+//////////////////
 // Audio //
 //
 var audioMute = false;
-var SoundJoin = new Audio('http://www.chiptape.com/chiptape/sounds/medium/SOIF_blue5c.wav');
-SoundJoin.volume=0.5
-var Soundleave = new Audio('http://princezze.free.fr/sounds/bhump.wav');
-Soundleave.volume=0.7
-var SoundMessage = new Audio('http://stephane.brechet.free.fr/Sons/MP3/BUBBLE.mp3');
-SoundMessage.volume=0.5
+var SoundJoin = new Audio('assets/join.wav');
+SoundJoin.volume=0.5;
+var SoundLeave = new Audio('assets/leave.wav');
+SoundLeave.volume=0.7;
+var SoundMessage = new Audio('assets/message.mp3');
+SoundMessage.volume=0.025;
+
+function playAudio(audio) {
+	// Check if muted
+	if (!audioMute) {audio.play()}
+}
 
 //////////////////////
 // Buttons
 //
-function hideMe(ele) {
+function hideMe(ele, thisBtn) {
 	var e = document.getElementById(ele); //ele.children[0].id
 	var dis = e.style.display;
 	if (dis === 'none') {
@@ -458,15 +469,37 @@ function hideMe(ele) {
 	} else {
 		e.style.display = 'none';
 	}
-	// If both viewers and debug windows hidden
-	if (document.getElementById('chatters').style.display === 'none' && document.getElementById('chat').style.display === 'none') {
+	// If both viewers and debug windows hidden, expand chat window horizontally
+	let chattersOpen = document.getElementById('chatters').style.display;
+	let chatOpen = document.getElementById('chat').style.display;
+
+	if (chattersOpen === 'none' && chatOpen === 'none') {
 		document.getElementById('sidebar').style.display = 'none';
 	} else {
 		document.getElementById('sidebar').style.display = 'flex';
 	}
 	
+	// Change icon/text on buttons each press
+	if (e.style.display == 'none') {thisBtn.innerHTML = `🔳 Show ${thisBtn.value}`}
+	else {thisBtn.innerHTML = `🔲 Hide ${thisBtn.value}`}
+
 	//console.log('hidden ' + ele.id + ' ' + e.hidden);
 }
+function muteMe(btn) {
+	var val;
+	if (btn.value == 'false') {
+		val = true;
+		btn.value = val;
+		btn.innerHTML = '🔇 UNMUTE';
+	} else if (btn.value == 'true') {
+		val = false;
+		btn.value = val;
+		btn.innerHTML = '🔊 MUTE';
+	}
+	// Set global
+	audioMute = val;
+}
+
 // Login //
 function login() {
 	// Validate entries
@@ -480,10 +513,11 @@ function login() {
 		alert("Please input a Value");
 	} else {
 		console.log('Accepted');
+
 		// Input Accepted
 		//
 		// Set vars
-		channels.push( (document.getElementById("channel").value).toLowerCase() );
+		channels.push( ch.toLowerCase() );
 		//clientOptions.options.clientId = document.getElementById("client").value;
 		//clientOptions.identity.username = (document.getElementById("uname").value).toLowerCase();
 		//clientOptions.identity.password = document.getElementById("pword").value;

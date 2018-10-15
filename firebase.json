@@ -6,6 +6,7 @@
       "**/.git/**",
       ".firebaserc",
       ".firebase",
+      "README.md",
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
