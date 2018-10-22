@@ -1,7 +1,7 @@
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
 var channels = [], // Channels to initially join
-	fadeDelay = 5000, // Set to false to disable chat fade
+	fadeDelay = 10000, // Set to false to disable chat fade
 	showChannel = true, // Show respective channels if the channels is longer than 1
 	useColor = true, // Use chatters' colors or to inherit
 	showBadges = true, // Show chatters' badges
@@ -263,22 +263,22 @@ function handleChat(channel, user, message, self) {
 	
 	// Chatter color
 	var color = setUserColor(-1);
-	/*
-	var color = useColor ? user.color : 'inherit';
-	if(color === null) {
+	// Set Chatter Name color
+	var nameColor = useColor ? user.color : 'inherit';
+	if(nameColor === null) {
 		if(!randomColorsChosen.hasOwnProperty(chan)) {
 			randomColorsChosen[chan] = {};
 		}
 		if(randomColorsChosen[chan].hasOwnProperty(name)) {
-			color = randomColorsChosen[chan][name];
+			nameColor = randomColorsChosen[chan][name];
 		}
 		else {
 			// Assign random color to chatter
-			color = defaultColors[Math.floor(Math.random()*defaultColors.length)];
-			randomColorsChosen[chan][name] = color;
+			nameColor = defaultColors[Math.floor(Math.random()*defaultColors.length)];
+			randomColorsChosen[chan][name] = nameColor;
 		}
 	}
-	*/
+	
 	
 	chatLine.className = 'chat-line chat-notice';
 	chatLine.dataset.username = name;
@@ -296,7 +296,7 @@ function handleChat(channel, user, message, self) {
 	// Get color level	
 	var level = lookUpChatterStatus(name);
 	chatLine.dataset.level = level;
-	//chatName.style.color = color;
+	chatName.style.color = color;
 	chatName.innerHTML = user['display-name'] || name;
 	
 	chatColon.className = 'chat-colon';
@@ -309,7 +309,8 @@ function handleChat(channel, user, message, self) {
 	if(client.opts.channels.length > 1 && showChannel) chatLine.appendChild(chatChannel);
 	if(showBadges) chatLine.appendChild(badges(chan, user, self));
 	chatLine.appendChild(chatName);
-	chatLine.appendChild(chatColon);
+	//chatLine.appendChild(chatColon);
+	chatLine.appendChild( document.createElement('br') );
 	chatLine.appendChild(chatMessage);
 	
 	div.appendChild(chatLine);
