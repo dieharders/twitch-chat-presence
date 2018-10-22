@@ -461,7 +461,14 @@ client.addListener('part', function (channel, username) {
 // Each list is partial, not an updated all-inclusive list, so add each list to arrray upon event trigger.
 client.addListener('names', function (channel, users) {
 	//console.log('Users list: '+users);
-	chatNotice('Users: ' + users, 1000, 1, 'chat-room-part');
+	let s = '';
+	for (let index = 0; index < users.length; index++) {
+		let e = users[index] + ', ';
+		//let u = e.replace(/,/g, ', ');
+		s += e;
+	}
+	
+	chatNotice('Users: ' + s, 1000, 1, 'chat-room-part');
 	getChattersList(users);
 });
 // Crash
