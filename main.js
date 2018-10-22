@@ -329,7 +329,7 @@ function handleChat(channel, user, message, self) {
 	}
 
 	// Auto Scroll to bottom of page if already at bottom
-	let scrollH = (div.scrollTop + div.offsetHeight)+60;	
+	let scrollH = (div.scrollTop + div.offsetHeight)+90;
 	if (scrollH >= div.scrollHeight || div.offsetHeight == div.scrollHeight)
 	{
 		div.scrollTo(0, div.scrollHeight);	
