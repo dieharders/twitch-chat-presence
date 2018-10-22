@@ -1,4 +1,4 @@
-//** Forked: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
+//** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
 var channels = [], // Channels to initially join
 	fadeDelay = 5000, // Set to false to disable chat fade
@@ -230,7 +230,7 @@ function handleChat(channel, user, message, self) {
 
 	var chan = dehash(channel),
 		name = user.username,
-		chatLine = document.createElement('div'),
+		chatLine = document.createElement('span'),
 		chatChannel = document.createElement('span'),
 		chatName = document.createElement('span'),
 		chatColon = document.createElement('span'),
@@ -288,6 +288,7 @@ function handleChat(channel, user, message, self) {
 	chatLine.appendChild(chatMessage);
 	
 	div.appendChild(chatLine);
+	div.appendChild( document.createElement('br') ); // Add a line break between each msg so they line down vertically
 	
 	if(typeof fadeDelay == 'number') {
 		setTimeout(function() {
@@ -327,6 +328,7 @@ function chatNotice(information, noticeFadeDelay, level, additionalClasses) {
 	}
 	
 	chat.appendChild(ele);
+	chat.appendChild( document.createElement('br') );
 	
 	if(typeof noticeFadeDelay == 'number') {
 		setTimeout(function() {
@@ -500,6 +502,7 @@ function muteMe(btn) {
 	audioMute = val;
 }
 
+/////////////////
 // Login //
 function login() {
 	// Validate entries
@@ -527,8 +530,12 @@ function login() {
 
 		// Show App
 		document.getElementById('container').style.display = 'flex';
+		document.getElementById('container').style.display = '-webkit-flex';
 		document.getElementById('button-container').style.display = 'block';
 		// Hide login
 		document.getElementById('login').style.display = 'none';
 	}
 }
+
+////////////////////
+// Init Code

@@ -110,71 +110,84 @@ a {
 }
 
 #sidebar {
+	box-sizing: content-box;
 	display: flex;
+	display: -webkit-flex; /* Safari */
 	flex-direction: column;
-	width: 25%;
+	max-width: 30%;
+	width: 100%;
 	height: 100vh;
+	margin: 0px;
 	padding: 0px;
-	overflow: hidden;
+	padding-left: 8px;
 	flex-grow: 1;
+	z-index: 1;
 }
 /* Viewer List */
 .viewers {
 	display: block;
 	color: white;
-	max-width: 250px;
-	background-color: red; 
+	width: auto;
+	background-color: hsla(250, 80%, 65%, 1); 
 	font-weight: bold;
 	padding: 0px;
-	padding-left: 0.25em;
+	padding-left: 4px;
 	margin: 4px;
+	margin-right: 12px;
 	margin-bottom: 8px;
 	border-color: black;
 	border-width: 2px;
 	border-style: solid;
 	border-radius: 0.25em;
-	overflow: hidden;
+	overflow-x: hidden;
 }
-.viewers:before {
+.viewers:after {
 	content: '👀';
 }
 
 #chatters {
+	box-sizing: content-box;
 	position: relative;
 	display: block;
 	height: 50%;
-	width: auto;
-	padding: 0px;
-	margin: 8px;
-	margin-right: 0px;
+	width: 100%;
+	padding-right: 17px;
+	margin: auto;
+	margin-top: 4px;
+	margin-bottom: 4px;
 	overflow: hidden;
 	word-wrap: wrap;
-	overflow-y: scroll;
+	white-space: wrap;
+	overflow-y: auto;
 	flex-grow: 1;
 }
 /* Debug Messages */
 #chat {
+	box-sizing: content-box;
 	position: relative;
 	display: block;
-	width: auto;
+	width: 100%;
 	height: 50%;
-	margin: 8px;
-	margin-right: 0px;
-	padding: 0px;
+	padding-right: 17px;
+	margin: auto;
+	margin-top: 4px;
 	overflow: hidden;
-	word-wrap: wrap;
-	overflow-y: scroll;
+	overflow-y: auto;
 	flex-grow: 1;
+	word-wrap: wrap;
+	white-space: wrap;
 }
 	
 #uber-chat {
+	box-sizing: border-box;
 	position: relative;
 	display: inline-block;
 	height: 100vh;
 	width: 100%;
+	margin: auto;
 	padding: 0px;
-	padding-left: .25em;
-	padding-right: .25em;
+	padding-left: 1em;
+	padding-right: 1em;
 	overflow: hidden;
 	word-wrap: wrap;
 	overflow-y: scroll;
@@ -197,10 +210,24 @@ a {
 	opacity: .7;
 }
 .chat-line.chat-action {
+	color: rgb(237, 235, 94);
 }
 .chat-line.chat-notice {
 	opacity: .9;
 	font-weight: 400;
+}
+/* Chat Msg */
+.chat-line:not(.chat-name) {
+	display: inline-block;
+	width: auto;
+	height: auto;
+	padding: 6px;
+	margin: auto;
+	border-radius: 0.25em;
+	background-color: rgba(184, 184, 184, 0.25);
+	overflow-x: hidden;
+	word-wrap: wrap;
+	white-space: wrap;
 }
 .chat-line.chat-notice[data-level] {
 }
