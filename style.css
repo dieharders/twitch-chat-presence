@@ -387,7 +387,7 @@ a {
 }
 
 .chat-badge-bot {
-	background-image: url(https://cdn.betterttv.net/tags/bot.png);
+	/*background-image: url(https://cdn.betterttv.net/tags/bot.png);*/
 }
 .chat-badge-bot:before {
 	content: '🤖';
