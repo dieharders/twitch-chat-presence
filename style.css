@@ -348,7 +348,7 @@ a {
 }
 
 .chat-badge-mod {
-	background-color: hsl(61, 62%, 43%);
+	background-color: hsl(56, 79%, 54%);
 	background-image: url(https://www.twitch.tv/images/xarth/badge_mod.svg);
 }
 .chat-badge-mod:before {
@@ -412,7 +412,7 @@ a {
 }
 
 .chat-badge-bits-leader {
-	background-color: hsl(194, 85%, 36%);
+	background-color: hsl(184, 86%, 36%);
 	padding-right: 8px;
 }
 .chat-badge-bits-leader:before {
@@ -420,7 +420,7 @@ a {
 }
 
 .chat-badge-premium {
-	background-color: hsl(56, 79%, 54%);
+	background-color: hsl(120, 79%, 54%);
 }
 .chat-badge-premium:before {
 	content: '💍';
