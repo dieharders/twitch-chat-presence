@@ -307,8 +307,8 @@ function handleChat(channel, user, message, self) {
 	chatMessage.innerHTML = showEmotes ? formatEmotes(message, user.emotes) : htmlEntities(message);
 
 	if(client.opts.channels.length > 1 && showChannel) chatLine.appendChild(chatChannel);
-	if(showBadges) chatLine.appendChild(badges(chan, user, self));
 	chatLine.appendChild(chatName);
+	if(showBadges) chatLine.appendChild(badges(chan, user, self));
 	//chatLine.appendChild(chatColon);
 	chatLine.appendChild( document.createElement('br') );
 	chatLine.appendChild(chatMessage);

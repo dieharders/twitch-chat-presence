@@ -302,6 +302,7 @@ a {
 	font-weight: 300;
 }
 .chat-name {
+	margin-right: 4px;
 	font-weight: 700;
 	font-size: 12pt;
 }
@@ -347,7 +348,7 @@ a {
 }
 
 .chat-badge-mod {
-	background-color: hsl(105, 89%, 36%);
+	background-color: hsl(61, 62%, 43%);
 	background-image: url(https://www.twitch.tv/images/xarth/badge_mod.svg);
 }
 .chat-badge-mod:before {
@@ -355,7 +356,7 @@ a {
 }
 
 .chat-badge-turbo {
-	background-color: hsl(261, 43%, 45%);
+	background-color: hsl(340, 51%, 50%);
 	background-image: url(https://www.twitch.tv/images/xarth/badge_turbo.svg);
 }
 .chat-badge-turbo:before {
@@ -363,7 +364,7 @@ a {
 }
 
 .chat-badge-broadcaster {
-	background-color: hsl(0, 81%, 50%);
+	background-color: hsl(0, 0%, 58%);
 	background-image: url(https://www.twitch.tv/images/xarth/badge_broadcaster.svg);
 }
 .chat-badge-broadcaster:before {
@@ -379,7 +380,7 @@ a {
 }
 
 .chat-badge-staff {
-	background-color: hsl(268, 55%, 13%);
+	background-color: hsl(250, 39%, 38%);
 	background-image: url(https://www.twitch.tv/images/xarth/badge_staff.svg);
 }
 .chat-badge-staff:before {
@@ -396,6 +397,7 @@ a {
 
 .chat-badge-bot {
 	/*background-image: url(https://cdn.betterttv.net/tags/bot.png);*/
+	background-color: hsl(0, 0%, 87%);
 }
 .chat-badge-bot:before {
 	content: '🤖';
@@ -410,7 +412,7 @@ a {
 }
 
 .chat-badge-bits-leader {
-	background-color: hsl(204, 84%, 36%);
+	background-color: hsl(194, 85%, 36%);
 	padding-right: 8px;
 }
 .chat-badge-bits-leader:before {
