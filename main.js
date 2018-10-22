@@ -83,6 +83,7 @@ function badges(chan, user, isBot) {
 	function createBadge(name) {
 		var badge = document.createElement('div');
 		badge.className = 'chat-badge-' + name;
+		badge.title = name;
 		return badge;
 	}
 	
@@ -99,6 +100,30 @@ function badges(chan, user, isBot) {
 		if(user.turbo) {
 			chatBadges.appendChild(createBadge('turbo'));
 		}
+		if(user.subscriber) {
+			let e = createBadge('subscriber');
+			if (user.badges.subscriber > 0) {
+				e.innerHTML = user.badges.subscriber;
+			}
+			else {
+				e.style.padding = '0px';
+			}
+			chatBadges.appendChild(e);
+		}
+		if(user.badges != null && user.badges.bits > 0) {
+			let e = createBadge('bits');
+			e.innerHTML = user.badges.bits;
+			chatBadges.appendChild(e);
+		}
+		if(user.badges != null && typeof user.badges['bits-leader'] != 'undefined') {
+			let e = createBadge('bits-leader');
+			e.innerHTML = user.badges['bits-leader'];
+			chatBadges.appendChild(e);
+		}
+		if(user.badges != null && user.badges.premium) {
+			chatBadges.appendChild(createBadge('premium'));
+		}
+		//console.log(user);
 	}
 	else {
 		chatChanges.appendChild(createBadge('bot'));

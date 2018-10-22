@@ -335,11 +335,12 @@ a {
 	background-repeat: no-repeat;
 	margin-right: .3em;
 	text-align: center;
+	cursor: default;
 }
 
 .chat-badge-mod {
 	background-color: hsl(105, 89%, 36%);
-	background-image: url(http://www.twitch.tv/images/xarth/badge_mod.svg);
+	background-image: url(https://www.twitch.tv/images/xarth/badge_mod.svg);
 }
 .chat-badge-mod:before {
 	content: '👑';
@@ -347,7 +348,7 @@ a {
 
 .chat-badge-turbo {
 	background-color: hsl(261, 43%, 45%);
-	background-image: url(http://www.twitch.tv/images/xarth/badge_turbo.svg);
+	background-image: url(https://www.twitch.tv/images/xarth/badge_turbo.svg);
 }
 .chat-badge-turbo:before {
 	content: '🔥';
@@ -355,7 +356,7 @@ a {
 
 .chat-badge-broadcaster {
 	background-color: hsl(0, 81%, 50%);
-	background-image: url(http://www.twitch.tv/images/xarth/badge_broadcaster.svg);
+	background-image: url(https://www.twitch.tv/images/xarth/badge_broadcaster.svg);
 }
 .chat-badge-broadcaster:before {
 	content: '🎙️';
@@ -363,29 +364,57 @@ a {
 
 .chat-badge-admin {
 	background-color: hsl(40, 96%, 54%);
-	background-image: url(http://www.twitch.tv/images/xarth/badge_admin.svg);
+	background-image: url(https://www.twitch.tv/images/xarth/badge_admin.svg);
 }
 .chat-badge-admin:before {
-	content: '💎';
+	content: '🎩';
 }
 
 .chat-badge-staff {
 	background-color: hsl(268, 55%, 13%);
-	background-image: url(http://www.twitch.tv/images/xarth/badge_staff.svg);
+	background-image: url(https://www.twitch.tv/images/xarth/badge_staff.svg);
 }
 .chat-badge-staff:before {
 	content: '🆔';
 }
 
 .chat-badge-subscriber {
+	background-color: hsla(0, 0%, 91%, 0.45);
+	padding-right: 8px;
 }
 .chat-badge-subscriber:before {
-	content: '😄';
+	content: '💜';
 }
+
 .chat-badge-bot {
 	background-image: url(https://cdn.betterttv.net/tags/bot.png);
 }
+.chat-badge-bot:before {
+	content: '🤖';
+}
 
+.chat-badge-bits {
+	background-color: hsl(204, 84%, 36%);
+	padding-right: 8px;
+}
+.chat-badge-bits:before {
+	content: '💎';
+}
+
+.chat-badge-bits-leader {
+	background-color: hsl(204, 84%, 36%);
+	padding-right: 8px;
+}
+.chat-badge-bits-leader:before {
+	content: '🏅';
+}
+
+.chat-badge-premium {
+	background-color: hsl(56, 79%, 54%);
+}
+.chat-badge-premium:before {
+	content: '💍';
+}
 
 [class*="chat-delete"] {
 }
