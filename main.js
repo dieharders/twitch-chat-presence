@@ -140,7 +140,11 @@ function setUserColor(status) {
 	else if (status === -1) {return colors[2]}
 	else {return colors[1]}
 }
-
+/**
+ * Update the chat render
+ * @param level Status level of the user
+ * @param name Name of user
+ */
 function updateChat(level, name) {
 	var elements = document.getElementById('uber-chat').children;
 	//console.log('e: '+elements.length );
@@ -170,7 +174,9 @@ function setChatters() {
 	document.getElementById("chatters").innerHTML = title + stringList;
 }
 
-// Show initial list of chatters in html.
+/**
+ * Show initial list of chatters in html
+ */
 function showChatters() {
 	// Parse list, add to html formatted array
 	htmlChatters = [];
@@ -236,7 +242,7 @@ function addChattersList(user) {
 	chatNotice('Added ' + user + ' ::: ' +'viewers: ' + chatters.length, 1000, -1, 'chat-room-part');
 }
 
-// Return level by name
+// Return status level by user's name
 function lookUpChatterStatus(name) {
 	for (let i = 0; i < htmlChatters.length; i++) {
 		let ind = htmlChatters[i, 0].indexOf(name);
@@ -249,6 +255,13 @@ function lookUpChatterStatus(name) {
 	}
 }
 
+/**
+ * Main loop for chat
+ * @param channel 
+ * @param user 
+ * @param message 
+ * @param self 
+ */
 function handleChat(channel, user, message, self) {
 	playAudio(SoundMessage);
 	let div = document.getElementById('uber-chat');
@@ -336,6 +349,13 @@ function handleChat(channel, user, message, self) {
 	}
 }
 
+/**
+ * Show debug messages in side panel
+ * @param {string} information Message text to display
+ * @param {number} noticeFadeDelay How long to take to fade the message to grey
+ * @param {number} level Status level of user
+ * @param {string} additionalClasses Styles
+ */
 function chatNotice(information, noticeFadeDelay, level, additionalClasses) {
 	var ele = document.createElement('div');
 	
@@ -366,7 +386,6 @@ function chatNotice(information, noticeFadeDelay, level, additionalClasses) {
 }
 
 var recentTimeouts = {};
-
 function timeout(channel, username) {
 	if(!doTimeouts) return false;
 	if(!recentTimeouts.hasOwnProperty(channel)) {
@@ -506,7 +525,7 @@ function playAudio(audio) {
  * @param thisBtn Ref to button element
  */
 function hideMe(el, thisBtn) {
-	var e = document.getElementById(el); //ele.children[0].id
+	var e = document.getElementById(el); //el.children[0].id
 	var dis = e.style.display;
 	if (dis === 'none') {
 		e.style.display = 'inline-block';
