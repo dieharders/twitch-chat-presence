@@ -1,14 +1,14 @@
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
 var channels = [], // Channels to initially join
-	fadeDelay = 10000, // Set to false to disable chat fade
-	showChannel = true, // Show respective channels if the channels is longer than 1
-	useColor = true, // Use chatters' colors or to inherit
-	showBadges = true, // Show chatters' badges
-	showEmotes = true, // Show emotes in the chat
-	doTimeouts = true, // Hide the messages of people who are timed-out
+	fadeDelay = 10000,   // Set to false to disable chat fade
+	showChannel = true,  // Show respective channels if the channels is longer than 1
+	useColor = true,     // Use chatters' colors or to inherit
+	showBadges = true,   // Show chatters' badges
+	showEmotes = true,   // Show emotes in the chat
+	doTimeouts = true,   // Hide the messages of people who are timed-out
 	doChatClears = true, // Hide the chat from an entire channel
-	showHosting = true, // Show when the channel is hosting or not
+	showHosting = true,  // Show when the channel is hosting or not
 	showConnectionNotices = true; // Show messages like "Connected" and "Disconnected"
 
 var chat = document.getElementById('chat'),
@@ -451,7 +451,7 @@ client.addListener('join', function (channel, username) {
 client.addListener('part', function (channel, username) {
 	var index = joinAccounced.indexOf(channel);
 	if(index > -1) {
-		//if(showConnectionNotices) chatNotice('Parted ' + capitalize(dehash(channel)) + ' => ' + username, 1000, 3, 'chat-room-part');
+		//if(showConnectionNotices) chatNotice('Departed ' + capitalize(dehash(channel)) + ' => ' + username, 1000, 3, 'chat-room-part');
 		joinAccounced.splice(joinAccounced.indexOf(channel), 1);
 		playAudio(SoundLeave);
 	}
@@ -461,11 +461,10 @@ client.addListener('part', function (channel, username) {
 // Recieved chatters list in channel. May be sent multiple times in large channels.
 // Each list is partial, not an updated all-inclusive list, so add each list to arrray upon event trigger.
 client.addListener('names', function (channel, users) {
-	//console.log('Users list: '+users);
+	//console.log('Users list: ' + users);
 	let s = '';
 	for (let index = 0; index < users.length; index++) {
 		let e = users[index] + ', ';
-		//let u = e.replace(/,/g, ', ');
 		s += e;
 	}
 	
@@ -488,6 +487,10 @@ SoundLeave.volume=0.7;
 var SoundMessage = new Audio('assets/message.mp3');
 SoundMessage.volume=0.025;
 
+/**
+ * Play specified audio sample
+ * @param audio 
+ */
 function playAudio(audio) {
 	// Check if muted
 	if (!audioMute) {audio.play()}
@@ -496,8 +499,14 @@ function playAudio(audio) {
 //////////////////////
 // Buttons
 //
-function hideMe(ele, thisBtn) {
-	var e = document.getElementById(ele); //ele.children[0].id
+
+/**
+ * Hide a menu
+ * @param el HTML element
+ * @param thisBtn Ref to button element
+ */
+function hideMe(el, thisBtn) {
+	var e = document.getElementById(el); //ele.children[0].id
 	var dis = e.style.display;
 	if (dis === 'none') {
 		e.style.display = 'inline-block';
@@ -520,6 +529,11 @@ function hideMe(ele, thisBtn) {
 
 	//console.log('hidden ' + ele.id + ' ' + e.hidden);
 }
+
+/**
+ * Mute the audio
+ * @param btn 
+ */
 function muteMe(btn) {
 	var val;
 	if (btn.value == 'false') {
@@ -536,7 +550,9 @@ function muteMe(btn) {
 }
 
 /////////////////
-// Login //
+/**
+ * Login
+ */
 function login() {
 	// Validate entries
 	var ch = document.forms["loginForm"]["channel-name"].value;
@@ -569,6 +585,3 @@ function login() {
 		document.getElementById('login').style.display = 'none';
 	}
 }
-
-////////////////////
-// Init Code
