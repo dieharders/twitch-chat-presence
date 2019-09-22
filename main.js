@@ -256,14 +256,16 @@ function lookUpChatterStatus(name) {
 }
 
 /**
- * Main loop for chat
- * @param channel 
- * @param user 
- * @param message 
- * @param self 
+ * Main loop for chat functionality
+ * @param channel
+ * @param user
+ * @param message
+ * @param self
  */
 function handleChat(channel, user, message, self) {
 	playAudio(SoundMessage);
+
+	// Ref to chat messages container
 	let div = document.getElementById('uber-chat');
 
 	var chan = dehash(channel),
@@ -291,7 +293,6 @@ function handleChat(channel, user, message, self) {
 			randomColorsChosen[chan][name] = nameColor;
 		}
 	}
-	
 	
 	chatLine.className = 'chat-line chat-notice';
 	chatLine.dataset.username = name;
@@ -326,15 +327,17 @@ function handleChat(channel, user, message, self) {
 	chatLine.appendChild( document.createElement('br') );
 	chatLine.appendChild(chatMessage);
 	
+	// Add chat message node to messages container
 	div.appendChild(chatLine);
 	div.appendChild( document.createElement('br') ); // Add a line break between each msg so they line down vertically
-	
+
 	if(typeof fadeDelay == 'number') {
 		setTimeout(function() {
 				chatLine.dataset.faded = '';
 			}, fadeDelay);
 	}
-	
+
+	// Prevent chat length from going over limit
 	let maxChatLength = 300;
 	if(div.children.length > maxChatLength) {
 		var oldMessages = [].slice.call(div.children).slice(0, 10);
@@ -478,7 +481,7 @@ client.addListener('part', function (channel, username) {
 	removeChattersList(username);
 });
 // Recieved chatters list in channel. May be sent multiple times in large channels.
-// Each list is partial, not an updated all-inclusive list, so add each list to arrray upon event trigger.
+// Each list is partial, not an updated all-inclusive list, so add each list to array upon event trigger.
 client.addListener('names', function (channel, users) {
 	//console.log('Users list: ' + users);
 	let s = '';
@@ -521,17 +524,21 @@ function playAudio(audio) {
 
 /**
  * Hide a menu
- * @param el HTML element
+ * @param el HTML element of container
  * @param thisBtn Ref to button element
  */
 function hideMe(el, thisBtn) {
 	var e = document.getElementById(el); //el.children[0].id
+	var contentContainer = thisBtn.firstChild;
 	var dis = e.style.display;
+
+	// Set display state
 	if (dis === 'none') {
 		e.style.display = 'inline-block';
 	} else {
 		e.style.display = 'none';
 	}
+
 	// If both viewers and debug windows hidden, expand chat window horizontally
 	let chattersOpen = document.getElementById('chatters').style.display;
 	let chatOpen = document.getElementById('chat').style.display;
@@ -543,8 +550,8 @@ function hideMe(el, thisBtn) {
 	}
 	
 	// Change icon/text on buttons each press
-	if (e.style.display == 'none') {thisBtn.innerHTML = `🔳 Show ${thisBtn.value}`}
-	else {thisBtn.innerHTML = `🔲 Hide ${thisBtn.value}`}
+	if (e.style.display === 'none') {contentContainer.innerHTML = `🔳 Show ${thisBtn.value}`}
+	else {contentContainer.innerHTML = `🔲 Hide ${thisBtn.value}`}
 
 	//console.log('hidden ' + ele.id + ' ' + e.hidden);
 }
