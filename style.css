@@ -1,3 +1,12 @@
+@font-face {
+	font-family: name;
+	src: url(assets/fonts/Mario-Kart-DS.ttf);
+}
+@font-face {
+	font-family: message;
+	src: url(assets/fonts/000webfont.ttf);
+}
+
 html,body {
 	font-family: 'Roboto', sans-serif;
 	/*background-color: hsla(0, 0%, 12%, 1);*/
@@ -14,6 +23,11 @@ h1, h2, h3 {
 	text-align: left;
 	margin-top: 4px;
 	margin-bottom: 4px;
+}
+h4 {
+	text-align: left;
+	margin-top: 2px;
+	margin-bottom: 2px;	
 }
 
 p {
@@ -54,6 +68,15 @@ input[type=text], select {
     box-sizing: border-box;
 }
 
+.join-menu-container {
+	display: inline-block;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 12px;
+	background-color: hsl(248, 12%, 9%);
+	border-radius: 4px;
+}
+
 #button-container {
 	display: none;
 	position: absolute;
@@ -88,8 +111,8 @@ input[type=text], select {
 	width: 100%;
 	font-size: 14pt;
 	margin: auto;
-	margin-top: 1em;
-	margin-bottom: 1em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 	border-radius: 0.3em;
 }
 
@@ -125,6 +148,11 @@ a {
 	height: 100%;
 	overflow: hidden;
 	z-index: 10;
+	-webkit-transition: left 3s ease-in;
+	-moz-transition: left 3s ease-in;
+	-ms-transition: left 3s ease-in;
+	-o-transition: left 3s ease-in;
+	transition: left 3s ease-in;
 }
 
 /* Container for avatar character */
@@ -134,11 +162,11 @@ a {
 	left: 0;
 	width: auto;
 	height: auto;
-	-webkit-transition: left 4s linear;
-	-moz-transition: left 4s linear;
-	-ms-transition: left 4s linear;
-	-o-transition: left 4s linear;
-	transition: left 4s;
+	transition: inherit;
+	-webkit-transition: inherit;
+	-moz-transition: inherit;
+	-ms-transition: inherit;
+	-o-transition: inherit;
 	z-index: 20; /* Draw above all avatar images */
 }
 .chat-avatar-image {
@@ -152,24 +180,26 @@ a {
     image-rendering: -moz-crisp-edges;          /* Firefox                        */
     image-rendering: -o-crisp-edges;            /* Opera                          */
     image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-    image-rendering: pixelated; /* Chrome */
+    image-rendering: pixelated; 				/* Chrome */
     image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 	background-repeat: no-repeat;
 	background-size: 100%;
-	-webkit-transition: left 4s linear;
-	-moz-transition: left 4s linear;
-	-ms-transition: left 4s linear;
-	-o-transition: left 4s linear;
-	transition: left 4s;
+	transition: inherit;
+	-webkit-transition: inherit;
+	-moz-transition: inherit;
+	-ms-transition: inherit;
+	-o-transition: inherit;
+	z-index: 10;
 }
 .chat-avatar-name {
 	position: absolute;
 	left: 0;
 	top: -154px;
-	font-size: 11pt;
+	font-family: name;
+	font-size: 16pt;
 	color: white;
-	background-color: grey;
+	background-color: rgba(85, 85, 85, 0.75);
 	border-radius: 4px;
 	padding: 4px;
 	text-align: center;
@@ -178,6 +208,13 @@ a {
 	-moz-transition: inherit;
 	-ms-transition: inherit;
 	-o-transition: inherit;
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated; 				/* Chrome */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 }
 .chat-avatar-message {
 	position: absolute;
@@ -188,7 +225,9 @@ a {
 	max-height: 75px;
 	padding: 8px;
 	text-align: center;
-	font-size: 12pt;
+	font-family: message;
+	font-size: 18pt;
+	line-height: 12pt;
 	color: black;
 	background-color: white;
 	border-radius: 4px;

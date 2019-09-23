@@ -233,6 +233,7 @@ function removeChattersList(user) {
 		chatters.splice(index, 1);
 		editChatters(user, false);
 		chatNotice('Removed ' + user + ' ::: ' + 'viewers: ' + chatters.length, 1000, 3, 'chat-room-part');
+		removeAvatar(user);
 	}
 }
 // Add user to chat list
@@ -240,6 +241,7 @@ function addChattersList(user) {
 	chatters.push(user);
 	editChatters(user, true);
 	chatNotice('Added ' + user + ' ::: ' +'viewers: ' + chatters.length, 1000, -1, 'chat-room-part');
+	addAvatar(user);
 }
 
 // Return status level by user's name
@@ -274,7 +276,9 @@ function handleChat(channel, user, message, self) {
 		chatChannel = document.createElement('span'),
 		chatName = document.createElement('span'),
 		chatColon = document.createElement('span'),
+		avatar = document.getElementById(`${name}-container`)
 		avatarMessage = document.getElementById(`${name}-message`),
+		avatarImage = document.getElementById(name),
 		chatMessage = document.createElement('span');
 	
 	// Chatter color
@@ -353,12 +357,18 @@ function handleChat(channel, user, message, self) {
 	}
 
 	// Set the message on the avatar speech bubble
-	if (message.length > 0) {
+	if (message.length > 0 && avatarMessage) {
 		avatarMessage.style.opacity = 100;
 		avatarMessage.innerHTML = message;
+		avatar.style.zIndex = 30; // Draw above other avatars
+		avatarImage.style.zIndex = 20;
+		// Remove previous timer
+		clearTimeout(avatarMessage.messageTimer);
 		// Fade out the message after X seconds
-		setTimeout( ()=> {
+		avatarMessage.messageTimer = setTimeout( ()=> {
 			avatarMessage.style.opacity = 0;
+			avatar.style.zIndex = 20; // Reset depth to default
+			avatarImage.style.zIndex = 10;
 		}, 8000);
 	}
 }
@@ -449,6 +459,10 @@ function hosting(channel, target, viewers, unhost) {
  */
 function addAvatar(user) {
 	const avatarsContainer = document.getElementById('chat-avatar-container');
+	const avatarList = avatarsContainer.children;
+	const userIndex = chatters.indexOf(user);
+	if (chatters[userIndex] === user) {return;}
+
 	// Create avatar parent node
 	const chatAvatar = document.createElement('div');
 	chatAvatar.className = 'chat-avatar';
@@ -470,6 +484,8 @@ function addAvatar(user) {
 	// Add a name container to avatar
 	const nameContainer = document.createElement('span');
 	nameContainer.id = `${user}-name`;
+	const randHue = Math.floor(Math.random() * 360);
+	nameContainer.style.color = `hsl(${randHue}, 75%, 70%)`;
 	nameContainer.className = 'chat-avatar-name';
 	nameContainer.innerHTML = user;
 	chatAvatar.appendChild(nameContainer);
@@ -480,8 +496,34 @@ function addAvatar(user) {
 	messageContainer.innerHTML = 'A message...';
 	chatAvatar.appendChild(messageContainer);
 
+	// Set the update timer
+	const randInterval = Math.max( 1000, Math.floor(Math.random() * 4000) );
+	chatAvatarImage.updateInterval = setInterval(() => {
+		avatarMove(user);
+	}, randInterval);
+
 	// Add avatar to container
 	avatarsContainer.appendChild(chatAvatar);
+
+	// Check number of instances
+	// let numAvatars = 0;
+	// for (let index = 0; index < avatarList.length; index++) {
+	// 	const className = avatarList[index].className;
+	// 	if (className === 'chat-avatar-image') {numAvatars++}
+	// }
+	// console.log('avatars:', numAvatars);
+}
+
+/**
+ * Remove an avatar
+ * @param {string} id
+ */
+function removeAvatar(id) {
+	const avatarsContainer = document.getElementById('chat-avatar-container');
+	const avatarImage = document.getElementById(id);
+	const avatar = document.getElementById(`${id}-container`);
+	avatarsContainer.removeChild(avatar); // Message & Name
+	avatarsContainer.removeChild(avatarImage); // Char image
 }
 
 /**
@@ -489,8 +531,10 @@ function addAvatar(user) {
  * @param {string} id
  */
 function avatarMove(id) {
-	const avatarImage = document.getElementById(id),
-		  avatarContainer = document.getElementById(`${id}-container`),
+	const avatarImage = document.getElementById(id);
+	if (!avatarImage) {return;}
+
+	const avatarContainer = document.getElementById(`${id}-container`),
 		  avatarName = document.getElementById(`${id}-name`),
 		  avatarMessage = document.getElementById(`${id}-message`),
 		  randX = getRandPosX(),
@@ -502,6 +546,10 @@ function avatarMove(id) {
 	}
 	// Update image
 	if (avatarImage) {
+		// Stop transition?
+		// avatarImage.style.transition = 'none !important';
+		// avatarImage.style.left = avatarImage.style.left;
+		avatarImage.style.transition = 'left 3s ease-in';
 		avatarImage.style.left = randX + 'px';
 		avatarImage.style.top = getAvatarPosY() + 'px';
 		avatarImage.style.transform  = `scale(${avatarImage.facingDir}, 2)`;
@@ -561,7 +609,7 @@ client.addListener('reconnect', function () {
 	});
 // User joined channel
 client.addListener('join', function (channel, username) {
-	if(username != client.getUsername()) {
+	if(username !== client.getUsername()) {
 		//if(showConnectionNotices) chatNotice('Joined ' + capitalize(dehash(channel)) + ' => ' + username, 1000, -1, 'chat-room-join');
 		joinAnnounced.push(channel);
 		playAudio(SoundJoin);
@@ -571,7 +619,7 @@ client.addListener('join', function (channel, username) {
 });
 // User left channel
 client.addListener('part', function (channel, username) {
-	var index = joinAnnounced.indexOf(channel);
+	const index = joinAnnounced.indexOf(channel);
 	if(index > -1) {
 		//if(showConnectionNotices) chatNotice('Departed ' + capitalize(dehash(channel)) + ' => ' + username, 1000, 3, 'chat-room-part');
 		joinAnnounced.splice(joinAnnounced.indexOf(channel), 1);
@@ -602,12 +650,12 @@ client.addListener('crash', function () {
 //////////////////
 // Audio //
 //
-var audioMute = false;
-var SoundJoin = new Audio('assets/join.wav');
+const audioMute = false;
+const SoundJoin = new Audio('assets/join.wav');
 SoundJoin.volume=0.5;
-var SoundLeave = new Audio('assets/leave.wav');
+const SoundLeave = new Audio('assets/leave.wav');
 SoundLeave.volume=0.7;
-var SoundMessage = new Audio('assets/message.mp3');
+const SoundMessage = new Audio('assets/message.mp3');
 SoundMessage.volume=0.025;
 
 /**
@@ -722,10 +770,3 @@ client.avatarUpdateInterval = 4000;
 client.avatarWidth = 64;
 client.avatarHeight = 64;
 client.avatarPosY = getAvatarPosY();
-// Set the update timer for avatars
-client.avatarInterval = setInterval(() => {
-	for (let index = 0; index < chatters.length; index++) {
-		var id = chatters[index];
-		avatarMove(id);
-	}
-}, client.avatarUpdateInterval);
