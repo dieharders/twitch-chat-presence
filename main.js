@@ -539,20 +539,17 @@ function avatarMove(id) {
 		  avatarMessage = document.getElementById(`${id}-message`),
 		  randX = getRandPosX(),
 		  currentPos = parseInt(avatarImage.style.left, 10);
-	if (randX >= currentPos) {
+	if (randX > currentPos) {
 		avatarImage.facingDir = 2; // Right
-	} else {
+	} else if (randX < currentPos) {
 		avatarImage.facingDir = -2; // Left
 	}
 	// Update image
 	if (avatarImage) {
-		// Stop transition?
-		// avatarImage.style.transition = 'none !important';
-		// avatarImage.style.left = avatarImage.style.left;
 		avatarImage.style.transition = 'left 3s ease-in';
 		avatarImage.style.left = randX + 'px';
 		avatarImage.style.top = getAvatarPosY() + 'px';
-		avatarImage.style.transform  = `scale(${avatarImage.facingDir}, 2)`;
+		avatarImage.style.transform = `scale(${avatarImage.facingDir}, 2)`;
 	}
 	// Update parent container
 	if (avatarContainer) {
