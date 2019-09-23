@@ -274,6 +274,7 @@ function handleChat(channel, user, message, self) {
 		chatChannel = document.createElement('span'),
 		chatName = document.createElement('span'),
 		chatColon = document.createElement('span'),
+		avatarMessage = document.getElementById(`${name}-message`),
 		chatMessage = document.createElement('span');
 	
 	// Chatter color
@@ -349,6 +350,16 @@ function handleChat(channel, user, message, self) {
 	if (scrollH >= div.scrollHeight || div.offsetHeight == div.scrollHeight)
 	{
 		div.scrollTo(0, div.scrollHeight);	
+	}
+
+	// Set the message on the avatar speech bubble
+	if (message.length > 0) {
+		avatarMessage.style.opacity = 100;
+		avatarMessage.innerHTML = message;
+		// Fade out the message after X seconds
+		setTimeout( ()=> {
+			avatarMessage.style.opacity = 0;
+		}, 8000);
 	}
 }
 
@@ -432,6 +443,94 @@ function hosting(channel, target, viewers, unhost) {
 	}
 }
 
+/**
+ * Add a chat avatar
+ * @param {string} user The id of the user
+ */
+function addAvatar(user) {
+	const avatarsContainer = document.getElementById('chat-avatar-container');
+	// Create avatar parent node
+	const chatAvatar = document.createElement('div');
+	chatAvatar.className = 'chat-avatar';
+	chatAvatar.id = `${user}-container`;
+	// Create avatar image
+	chatAvatarImage = document.createElement('div');
+	chatAvatarImage.id = user;
+	chatAvatarImage.className = 'chat-avatar-image';
+	chatAvatarImage.facingDir = 1; // Right	
+	const PosX = getRandPosX(),
+		  PosY = client.avatarPosY;
+	chatAvatarImage.style.left   = PosX + 'px';
+	chatAvatarImage.style.top    = PosY + 'px';
+	chatAvatarImage.style.width  = client.avatarWidth;
+	chatAvatarImage.style.height = client.avatarHeight;
+	chatAvatarImage.style.transform  = `scale(${chatAvatarImage.facingDir}, 2)`;
+	chatAvatarImage.style.backgroundImage = 'url(assets/avatar_01_right.png)';
+	avatarsContainer.appendChild(chatAvatarImage);
+	// Add a name container to avatar
+	const nameContainer = document.createElement('span');
+	nameContainer.id = `${user}-name`;
+	nameContainer.className = 'chat-avatar-name';
+	nameContainer.innerHTML = user;
+	chatAvatar.appendChild(nameContainer);
+	// Add message container to avatar
+	const messageContainer = document.createElement('div');
+	messageContainer.id = `${user}-message`;
+	messageContainer.className = 'chat-avatar-message';
+	messageContainer.innerHTML = 'A message...';
+	chatAvatar.appendChild(messageContainer);
+
+	// Add avatar to container
+	avatarsContainer.appendChild(chatAvatar);
+}
+
+/**
+ * Avatar logic main loop
+ * @param {string} id
+ */
+function avatarMove(id) {
+	const avatarImage = document.getElementById(id),
+		  avatarContainer = document.getElementById(`${id}-container`),
+		  avatarName = document.getElementById(`${id}-name`),
+		  avatarMessage = document.getElementById(`${id}-message`),
+		  randX = getRandPosX(),
+		  currentPos = parseInt(avatarImage.style.left, 10);
+	if (randX >= currentPos) {
+		avatarImage.facingDir = 2; // Right
+	} else {
+		avatarImage.facingDir = -2; // Left
+	}
+	// Update image
+	if (avatarImage) {
+		avatarImage.style.left = randX + 'px';
+		avatarImage.style.top = getAvatarPosY() + 'px';
+		avatarImage.style.transform  = `scale(${avatarImage.facingDir}, 2)`;
+	}
+	// Update parent container
+	if (avatarContainer) {
+		avatarContainer.style.left = parseInt(avatarImage.style.left, 10) - Math.floor(avatarContainer.clientWidth / 2) + 'px';
+		avatarContainer.style.top = getAvatarPosY() + 'px';
+	}
+}
+
+/**
+ * Get a random X position on screen
+ */
+function getRandPosX() {
+	const randX = Math.max( 0, Math.floor(Math.random() * window.innerWidth) - client.avatarWidth );
+	return randX;
+}
+
+/**
+ * Get the fixed avatar Y position
+ */
+function getAvatarPosY() {
+	const offset = 40;
+	const jitter = Math.floor( Math.random() * 10 );
+	const Y = window.innerHeight - offset - jitter - client.avatarHeight;
+	return Y;
+}
+
 ///////////////////
 //** Execution **//
 ///////////////////
@@ -452,7 +551,7 @@ client.addListener('connectfail', function () {
 	});
 client.addListener('connected', function (address, port) {
 		if(showConnectionNotices) chatNotice('Connected', 1000, -2, 'chat-connection-good-connected');
-		joinAccounced = [];
+		joinAnnounced = [];
 	});
 client.addListener('disconnected', function (reason) {
 		if(showConnectionNotices) chatNotice('Disconnected: ' + (reason || ''), 3000, 2, 'chat-connection-bad-disconnected');
@@ -464,17 +563,18 @@ client.addListener('reconnect', function () {
 client.addListener('join', function (channel, username) {
 	if(username != client.getUsername()) {
 		//if(showConnectionNotices) chatNotice('Joined ' + capitalize(dehash(channel)) + ' => ' + username, 1000, -1, 'chat-room-join');
-		joinAccounced.push(channel);
+		joinAnnounced.push(channel);
 		playAudio(SoundJoin);
 		addChattersList(username);
+		addAvatar(username);
 	}
 });
 // User left channel
 client.addListener('part', function (channel, username) {
-	var index = joinAccounced.indexOf(channel);
+	var index = joinAnnounced.indexOf(channel);
 	if(index > -1) {
 		//if(showConnectionNotices) chatNotice('Departed ' + capitalize(dehash(channel)) + ' => ' + username, 1000, 3, 'chat-room-part');
-		joinAccounced.splice(joinAccounced.indexOf(channel), 1);
+		joinAnnounced.splice(joinAnnounced.indexOf(channel), 1);
 		playAudio(SoundLeave);
 	}
 
@@ -488,6 +588,7 @@ client.addListener('names', function (channel, users) {
 	for (let index = 0; index < users.length; index++) {
 		let e = users[index] + ', ';
 		s += e;
+		addAvatar(users[index]);
 	}
 	
 	chatNotice('Users: ' + s, 1000, 1, 'chat-room-part');
@@ -528,12 +629,12 @@ function playAudio(audio) {
  * @param thisBtn Ref to button element
  */
 function hideMe(el, thisBtn) {
-	var e = document.getElementById(el); //el.children[0].id
-	var contentContainer = thisBtn.firstChild;
-	var dis = e.style.display;
+	const e = document.getElementById(el); //el.children[0].id
+		  contentContainer = thisBtn.firstChild,
+		  dis = e.style.display;
 
 	// Set display state
-	if (dis === 'none') {
+	if (dis === 'none' || dis === '') {
 		e.style.display = 'inline-block';
 	} else {
 		e.style.display = 'none';
@@ -611,3 +712,20 @@ function login() {
 		document.getElementById('login').style.display = 'none';
 	}
 }
+
+/////////////////
+// Main Loop ////
+/////////////////
+//
+// Vars
+client.avatarUpdateInterval = 4000;
+client.avatarWidth = 64;
+client.avatarHeight = 64;
+client.avatarPosY = getAvatarPosY();
+// Set the update timer for avatars
+client.avatarInterval = setInterval(() => {
+	for (let index = 0; index < chatters.length; index++) {
+		var id = chatters[index];
+		avatarMove(id);
+	}
+}, client.avatarUpdateInterval);
