@@ -350,7 +350,7 @@ function handleChat(channel, user, message, self) {
 	}
 
 	// Auto Scroll to bottom of page if already at bottom
-	let scrollH = (div.scrollTop + div.offsetHeight)+90;
+	let scrollH = (div.scrollTop + div.offsetHeight)+120;
 	if (scrollH >= div.scrollHeight || div.offsetHeight == div.scrollHeight)
 	{
 		div.scrollTo(0, div.scrollHeight);
@@ -360,8 +360,8 @@ function handleChat(channel, user, message, self) {
 	if (message.length > 0 && avatarMessage) {
 		avatarMessage.style.opacity = 100;
 		avatarMessage.innerHTML = message;
-		avatar.style.zIndex = 30; // Draw above other avatars
-		avatarImage.style.zIndex = 20;
+		// avatar.style.zIndex = 30; // Draw above other avatars
+		// avatarImage.style.zIndex = 20;
 		// Remove previous timer
 		clearTimeout(avatarMessage.messageTimer);
 		// Fade out the message after X seconds
@@ -369,8 +369,8 @@ function handleChat(channel, user, message, self) {
 			if (avatarMessage) {
 				avatarMessage.style.opacity = 0;
 			}
-			avatar.style.zIndex = 20; // Reset depth to default
-			avatarImage.style.zIndex = 10;
+			// avatar.style.zIndex = 20; // Reset depth to default
+			// avatarImage.style.zIndex = 10;
 		}, 8000);
 	}
 }
@@ -466,7 +466,6 @@ function addAvatar(users, index) {
 	const userIndex = users.indexOf(user);
 	client.zIndex += 0.25;
 	const zIndex = client.zIndex;
-	console.log(zIndex);
 
 	// Check number of instances, prevent further draw
 	//if (avatarArray.length > 1) { return; }
@@ -478,6 +477,8 @@ function addAvatar(users, index) {
 	const avatarPosY = getAvatarPosY(zIndex);
 	chatAvatar.style.top = avatarPosY + 'px';
 	chatAvatar.style.zIndex = zIndex;
+	chatAvatar.zdepth = zIndex;
+	chatAvatar.index = index;
 	// Create avatar image
 	chatAvatarImage = document.createElement('div');
 	chatAvatarImage.id = user;
@@ -535,6 +536,7 @@ function removeAvatar(id) {
 		avatarsContainer.removeChild(avatar); // Message & Name
 		avatarsContainer.removeChild(avatarImage); // Char image
 	}
+	chatters[chatters.indexOf(id)] = null; // replace value in array with null
 }
 
 /**
@@ -584,7 +586,7 @@ function getRandPosX(container) {
 	let randOffset = Math.round(Math.random() * randBaseScale); // random val 0-scale
 	randOffset = Math.max(50, randOffset); // minimum
 	const windowWidthMin = 32; // Left screen bound
-	const windowWidthMax = window.innerWidth - client.avatarWidth + 32; // Right screen bound
+	const windowWidthMax = window.innerWidth - client.avatarWidth - 32; // Right screen bound
 	let facing = 1;
 
 	if ( bool === 0 ) {
@@ -611,7 +613,7 @@ function getAvatarPosY(index) {
 }
 
 ///////////////////
-//** Execution **//
+//** Listeners **//
 ///////////////////
 client.addListener('message', handleChat);
 client.addListener('timeout', timeout);
@@ -792,10 +794,24 @@ function login() {
 	}
 }
 
+/**
+ * Move avatars back to correct Y Position when window is resizing
+ */
+function resetAvatarPosY() {
+	const container = document.getElementById('chat-avatar-container');
+	const children = container.children;
+
+	for (let index = 0; index < children.length; index++) {
+		const element = children[index];
+		element.style.top = getAvatarPosY(element.index) + 'px';
+	}
+}
+
 /////////////////
 // Main Loop ////
 /////////////////
 //
+window.onresize = resetAvatarPosY;
 // Global Vars
 client.avatarMinUpdateInterval = 2000;
 client.avatarWidth = 64;
