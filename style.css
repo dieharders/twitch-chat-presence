@@ -17,6 +17,7 @@ html,body {
 	margin: 0;
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 h1, h2, h3 {
@@ -27,7 +28,7 @@ h1, h2, h3 {
 h4 {
 	text-align: left;
 	margin-top: 2px;
-	margin-bottom: 2px;	
+	margin-bottom: 2px;
 }
 
 p {
@@ -80,8 +81,8 @@ input[type=text], select {
 #button-container {
 	display: none;
 	position: absolute;
-	right: 2%;
-	top: 1%;
+	right: 0.5em;
+	top: 0.5em;
 	height: auto;
 	width: auto;
 	z-index: 100;
@@ -100,6 +101,7 @@ input[type=text], select {
 	border: 0;
 	border-radius: 0.7em;
 	z-index: 10;
+	outline: none;
 }
 .hideBtn:hover {
 	color: rgba(255, 255, 255, 0.85);
@@ -120,9 +122,6 @@ input[type=text], select {
 .optionsContent {
 	display: inline;
 	position: relative;
-	width: auto;
-	height: auto;
-	float: left;
 	margin: 2px;
 	padding: 2px;
 }
@@ -134,7 +133,7 @@ a {
 
     text-decoration: none;
 	color: initial;
-	
+
 	font-size: 11pt;
 	text-align: center;
 }
@@ -246,6 +245,29 @@ a {
 	overflow: hidden;
 }
 
+/* Scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	background: hsla(250, 80%, 65%, 0.5);
+}
+::-webkit-scrollbar-thumb {
+	background: rgb(105, 86, 199);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgb(133, 109, 255);
+}
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+::-webkit-scrollbar-corner {
+    background-color: hsla(250, 80%, 65%, 0.5);
+}
+
 /* Chat GUI */
 #container {
 	position: relative;
@@ -257,75 +279,86 @@ a {
 }
 
 #sidebar {
-	box-sizing: content-box;
+	box-sizing: border-box;
 	display: flex;
-	display: -webkit-flex; /* Safari */
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	max-width: 30%;
-	width: 100%;
-	height: 100vh;
-	margin: 0px;
-	padding: 0px;
-	padding-left: 8px;
-	flex-grow: 1;
+	width: auto;
+	height: 100%;
+	margin: auto;
+	margin-left: 0;
+	padding: 8px;
 	z-index: 1;
 }
 
 /* Viewer List */
-.viewers {
+#viewers, .title {
 	display: block;
 	color: white;
-	width: auto;
-	background-color: hsla(250, 80%, 65%, 1); 
+	width: 100%;
+	background-color: hsla(250, 80%, 65%, 1);
 	font-weight: bold;
-	padding: 0px;
-	padding-left: 4px;
-	margin: 4px;
-	margin-right: 12px;
-	margin-bottom: 8px;
-	border-color: black;
-	border-width: 2px;
-	border-style: solid;
-	border-radius: 0.25em;
-	overflow-x: hidden;
+	padding: 4px;
+	margin: auto;
+	overflow: hidden;
+	text-align: center;
 }
-.viewers:after {
+#viewers:after {
 	content: '👀 Viewers';
 }
-
 #chatters {
-	box-sizing: content-box;
+	box-sizing: border-box;
 	position: relative;
 	display: block;
-	height: 50%;
+	height: 100%;
 	width: 100%;
-	padding-right: 17px;
+	padding: 0;
 	margin: auto;
-	margin-top: 4px;
-	margin-bottom: 4px;
+	margin-top: 8px;
 	overflow: hidden;
 	word-wrap: wrap;
 	white-space: wrap;
-	overflow-y: auto;
-	flex-grow: 1;
+	border-width: 3px;
+	border-color: hsla(250, 80%, 65%, 0.5);;
+	border-style: solid;
 }
 /* Debug Messages */
 #chat {
-	box-sizing: content-box;
+	box-sizing: border-box;
 	position: relative;
 	display: block;
 	width: 100%;
-	height: 50%;
-	padding-right: 17px;
+	height: 100%;
+	padding: 0;
 	margin: auto;
-	margin-top: 4px;
+	margin-bottom: 8px;
 	overflow: hidden;
-	overflow-y: auto;
-	flex-grow: 1;
 	word-wrap: wrap;
 	white-space: wrap;
+	border-width: 3px;
+	border-color: hsla(250, 80%, 65%, 0.5);
+	border-style: solid;
 }
-	
+/* List Windows */
+#chatters-list, #debug-list {
+	display: block;
+	position: relative;
+	width: auto;
+	margin: auto;
+	padding: 10px;
+	padding-bottom: 0;
+	overflow: hidden;
+	overflow-y: auto;
+}
+#debug-list {
+	height: calc(100% - 47px);
+}
+#chatters-list {
+	height: calc(100% - 50px);
+}
+/* Chat Messages */
 #uber-chat {
 	box-sizing: border-box;
 	position: relative;
@@ -333,12 +366,10 @@ a {
 	height: 100vh;
 	width: 100%;
 	margin: auto;
-	padding: 0px;
-	padding-left: 1em;
-	padding-right: 1em;
+	padding: 1em;
 	overflow: hidden;
 	word-wrap: wrap;
-	overflow-y: scroll;
+	overflow-y: auto;
 	flex-grow: 1;
 }
 

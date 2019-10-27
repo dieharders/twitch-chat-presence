@@ -22,7 +22,7 @@
         <br>Monitor your chat stats: number of viewers, see who's online, subscription levels, and more.
         <br><br>Give your users an on-screen presence with custom avatars!
     </p>
-    
+
     <br>
 
     <div class="join-menu-container">
@@ -49,8 +49,14 @@
 <!-- Chat GUI -->
 <div id="container">
     <div id="sidebar">
-        <div id="chat"></div>
-        <div id="chatters"></div>
+        <div id="chat">
+            <div class="title">Debug</div>
+            <div id="debug-list"></div>
+        </div>
+        <div id="chatters">
+            <span id="viewers"></span>
+            <div id="chatters-list"></div>
+        </div>
     </div>
     <!-- Chat Messages -->
     <div id="uber-chat"></div>

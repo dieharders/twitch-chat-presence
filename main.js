@@ -1,6 +1,6 @@
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-var channels = [], // Channels to initially join
+var channels = [], 		 // Channels to initially join
 	fadeDelay = 10000,   // Set to false to disable chat fade
 	showChannel = true,  // Show respective channels if the channels is longer than 1
 	useColor = true,     // Use chatters' colors or to inherit
@@ -11,7 +11,7 @@ var channels = [], // Channels to initially join
 	showHosting = true,  // Show when the channel is hosting or not
 	showConnectionNotices = true; // Show messages like "Connected" and "Disconnected"
 
-var chat = document.getElementById('chat'),
+var chat = document.getElementById('debug-list'),
 	defaultColors = ['rgb(255, 0, 0)','rgb(0, 0, 255)','rgb(0, 128, 0)','rgb(178, 34, 34)','rgb(255, 127, 80)','rgb(154, 205, 50)','rgb(255, 69, 0)','rgb(46, 139, 87)','rgb(218, 165, 32)','rgb(210, 105, 30)','rgb(95, 158, 160)','rgb(30, 144, 255)','rgb(255, 105, 180)','rgb(138, 43, 226)','rgb(0, 255, 127)'],
 	randomColorsChosen = {},
 	clientOptions = {
@@ -79,17 +79,17 @@ function formatEmotes(text, emotes) {
 }
 
 function badges(chan, user, isBot) {
-	
+
 	function createBadge(name) {
 		var badge = document.createElement('div');
 		badge.className = 'chat-badge-' + name;
 		badge.title = name;
 		return badge;
 	}
-	
+
 	var chatBadges = document.createElement('span');
 	chatBadges.className = 'chat-badges';
-	
+
 	if(!isBot) {
 		if(user.username == chan) {
 			chatBadges.appendChild(createBadge('broadcaster'));
@@ -128,7 +128,7 @@ function badges(chan, user, isBot) {
 	else {
 		chatChanges.appendChild(createBadge('bot'));
 	}
-	
+
 	return chatBadges;
 }
 
@@ -148,11 +148,11 @@ function setUserColor(status) {
 function updateChat(level, name) {
 	var elements = document.getElementById('uber-chat').children;
 	//console.log('e: '+elements.length );
-	
+
 	for (let i = 0; i < elements.length; i++) {
 		//console.log('Passed username' + name);
 		//console.log('DIV username' + elements[i].dataset.username);
-		
+
 		if (name === elements[i].dataset.username) {
 			elements[i].dataset.level = level;
 		}
@@ -166,12 +166,12 @@ var htmlChatters = [];
 function setChatters() {
 	// Convert html array to string
 	let stringList = '';
-	htmlChatters.forEach(function (user) {		
+	htmlChatters.forEach(function (user) {
 		stringList += user[0];
 	});
 	// Add chatters list to html
-	let title = '<span class="viewers">' + chatters.length + '</span>';
-	document.getElementById("chatters").innerHTML = title + stringList;
+	document.getElementById("viewers").innerHTML = chatters.length;
+	document.getElementById("chatters-list").innerHTML = stringList;
 }
 
 /**
@@ -211,7 +211,7 @@ function editChatters(chatter, status) {
 		level = -1;
 	}
 	else if (status === false) {
-		e = `<span style="color: ${col}">` + chatter + '</span>' + '<br>'; 
+		e = `<span style="color: ${col}">` + chatter + '</span>' + '<br>';
 		level = 3;
 	}
 	htmlChatters.push([e, level]);
@@ -238,10 +238,10 @@ function removeChattersList(user) {
 }
 // Add user to chat list
 function addChattersList(user) {
+	console.log(`User ${user} joined...`);
 	chatters.push(user);
 	editChatters(user, true);
 	chatNotice('Added ' + user + ' ::: ' +'viewers: ' + chatters.length, 1000, -1, 'chat-room-part');
-	addAvatar(user);
 }
 
 // Return status level by user's name
@@ -249,7 +249,7 @@ function lookUpChatterStatus(name) {
 	for (let i = 0; i < htmlChatters.length; i++) {
 		let ind = htmlChatters[i, 0].indexOf(name);
 		//console.log(name + ind);
-		
+
 		if (ind > -1) {
 			return htmlChatters[i, 1];
 		}
@@ -280,7 +280,7 @@ function handleChat(channel, user, message, self) {
 		avatarMessage = document.getElementById(`${name}-message`),
 		avatarImage = document.getElementById(name),
 		chatMessage = document.createElement('span');
-	
+
 	// Chatter color
 	var color = setUserColor(-1);
 	// Set Chatter Name color
@@ -298,30 +298,30 @@ function handleChat(channel, user, message, self) {
 			randomColorsChosen[chan][name] = nameColor;
 		}
 	}
-	
+
 	chatLine.className = 'chat-line chat-notice';
 	chatLine.dataset.username = name;
 	chatLine.dataset.channel = channel;
-	
+
 	if(user['message-type'] == 'action') {
 		chatLine.className += ' chat-action';
 	}
-	
+
 	chatChannel.className = 'chat-channel';
 	chatChannel.innerHTML = chan;
-	
+
 	chatName.className = 'chat-name chat-line chat-notice';
 
-	// Get color level	
+	// Get color level
 	var level = lookUpChatterStatus(name);
 	chatLine.dataset.level = level;
 	chatName.style.color = color;
 	chatName.innerHTML = user['display-name'] || name;
-	
+
 	chatColon.className = 'chat-colon';
-	
+
 	chatMessage.className = 'chat-message';
-	
+
 	chatMessage.style.color = color;
 	chatMessage.innerHTML = showEmotes ? formatEmotes(message, user.emotes) : htmlEntities(message);
 
@@ -331,7 +331,7 @@ function handleChat(channel, user, message, self) {
 	//chatLine.appendChild(chatColon);
 	chatLine.appendChild( document.createElement('br') );
 	chatLine.appendChild(chatMessage);
-	
+
 	// Add chat message node to messages container
 	div.appendChild(chatLine);
 	div.appendChild( document.createElement('br') ); // Add a line break between each msg so they line down vertically
@@ -353,7 +353,7 @@ function handleChat(channel, user, message, self) {
 	let scrollH = (div.scrollTop + div.offsetHeight)+90;
 	if (scrollH >= div.scrollHeight || div.offsetHeight == div.scrollHeight)
 	{
-		div.scrollTo(0, div.scrollHeight);	
+		div.scrollTo(0, div.scrollHeight);
 	}
 
 	// Set the message on the avatar speech bubble
@@ -366,7 +366,9 @@ function handleChat(channel, user, message, self) {
 		clearTimeout(avatarMessage.messageTimer);
 		// Fade out the message after X seconds
 		avatarMessage.messageTimer = setTimeout( ()=> {
-			avatarMessage.style.opacity = 0;
+			if (avatarMessage) {
+				avatarMessage.style.opacity = 0;
+			}
 			avatar.style.zIndex = 20; // Reset depth to default
 			avatarImage.style.zIndex = 10;
 		}, 8000);
@@ -382,30 +384,30 @@ function handleChat(channel, user, message, self) {
  */
 function chatNotice(information, noticeFadeDelay, level, additionalClasses) {
 	var ele = document.createElement('div');
-	
+
 	ele.className = 'chat-line chat-notice';
 	ele.innerHTML = information;
-	
+
 	if(additionalClasses !== undefined) {
 		if(Array.isArray(additionalClasses)) {
 			additionalClasses = additionalClasses.join(' ');
 		}
 		ele.className += ' ' + additionalClasses;
 	}
-	
+
 	if(typeof level == 'number' && level != 0) {
 		ele.dataset.level = level;
 	}
-	
+
 	chat.appendChild(ele);
 	chat.appendChild( document.createElement('br') );
-	
+
 	if(typeof noticeFadeDelay == 'number') {
 		setTimeout(function() {
 				ele.dataset.faded = '';
 			}, noticeFadeDelay || 500);
 	}
-	
+
 	return ele;
 }
 
@@ -471,7 +473,7 @@ function addAvatar(user) {
 	chatAvatarImage = document.createElement('div');
 	chatAvatarImage.id = user;
 	chatAvatarImage.className = 'chat-avatar-image';
-	chatAvatarImage.facingDir = 1; // Right	
+	chatAvatarImage.facingDir = 1; // Right
 	const PosX = getRandPosX(),
 		  PosY = client.avatarPosY;
 	chatAvatarImage.style.left   = PosX + 'px';
@@ -628,14 +630,15 @@ client.addListener('part', function (channel, username) {
 // Recieved chatters list in channel. May be sent multiple times in large channels.
 // Each list is partial, not an updated all-inclusive list, so add each list to array upon event trigger.
 client.addListener('names', function (channel, users) {
-	//console.log('Users list: ' + users);
+	console.log('Users list updated: ' + users);
+
 	let s = '';
 	for (let index = 0; index < users.length; index++) {
 		let e = users[index] + ', ';
 		s += e;
 		addAvatar(users[index]);
 	}
-	
+
 	chatNotice('Users: ' + s, 1000, 1, 'chat-room-part');
 	getChattersList(users);
 });
@@ -647,7 +650,7 @@ client.addListener('crash', function () {
 //////////////////
 // Audio //
 //
-const audioMute = false;
+let audioMute = false;
 const SoundJoin = new Audio('assets/join.wav');
 SoundJoin.volume=0.5;
 const SoundLeave = new Audio('assets/leave.wav');
@@ -657,7 +660,7 @@ SoundMessage.volume=0.025;
 
 /**
  * Play specified audio sample
- * @param audio 
+ * @param audio
  */
 function playAudio(audio) {
 	// Check if muted
@@ -694,7 +697,7 @@ function hideMe(el, thisBtn) {
 	} else {
 		document.getElementById('sidebar').style.display = 'flex';
 	}
-	
+
 	// Change icon/text on buttons each press
 	if (e.style.display === 'none') {contentContainer.innerHTML = `🔳 Show ${thisBtn.value}`}
 	else {contentContainer.innerHTML = `🔲 Hide ${thisBtn.value}`}
@@ -704,15 +707,15 @@ function hideMe(el, thisBtn) {
 
 /**
  * Mute the audio
- * @param btn 
+ * @param btn
  */
 function muteMe(btn) {
-	var val;
-	if (btn.value == 'false') {
+	let val;
+	if (btn.value === 'false') {
 		val = true;
 		btn.value = val;
 		btn.innerHTML = '🔇 UNMUTE';
-	} else if (btn.value == 'true') {
+	} else if (btn.value === 'true') {
 		val = false;
 		btn.value = val;
 		btn.innerHTML = '🔊 MUTE';
@@ -728,7 +731,7 @@ function muteMe(btn) {
 function login() {
 	// Validate entries
 	var ch = document.forms["loginForm"]["channel-name"].value;
-	//var cid = document.forms["loginForm"]["client-id"].value;	
+	//var cid = document.forms["loginForm"]["client-id"].value;
 	//var usr = document.forms["loginForm"]["username"].value;
 	//var pss = document.forms["loginForm"]["password"].value;
 
