@@ -477,8 +477,9 @@ function addAvatar(users, index) {
 	const avatarPosY = getAvatarPosY(zIndex);
 	chatAvatar.style.top = avatarPosY + 'px';
 	chatAvatar.style.zIndex = zIndex;
-	chatAvatar.zdepth = zIndex;
-	chatAvatar.index = index;
+	chatAvatar.setAttribute('zdepth', zIndex);
+	chatAvatar.setAttribute('index', index);
+
 	// Create avatar image
 	chatAvatarImage = document.createElement('div');
 	chatAvatarImage.id = user;
@@ -606,9 +607,7 @@ function getRandPosX(container) {
  * Get the fixed avatar Y position
  */
 function getAvatarPosY(index) {
-	const pos = 100;
-	const jitter = Math.floor( Math.random() * 25 );
-	const Y = window.innerHeight - pos - client.avatarHeight + index;
+	const Y = window.innerHeight - client.avatarBasePosY - client.avatarHeight + index;
 	return Y;
 }
 
@@ -798,12 +797,16 @@ function login() {
  * Move avatars back to correct Y Position when window is resizing
  */
 function resetAvatarPosY() {
+	// const diff = window.innerHeight - client.oldWindowHeight;
+	// console.log(diff);
+
 	const container = document.getElementById('chat-avatar-container');
 	const children = container.children;
 
-	for (let index = 0; index < children.length; index++) {
-		const element = children[index];
-		element.style.top = getAvatarPosY(element.index) + 'px';
+	for (let i = 0; i < children.length; i++) {
+		const avatar = children[i];
+		const sort = i*0.25;
+		avatar.style.top = getAvatarPosY(sort) + 'px';
 	}
 }
 
@@ -817,4 +820,6 @@ client.avatarMinUpdateInterval = 2000;
 client.avatarWidth = 64;
 client.avatarHeight = 64;
 client.avatarMsgPosY = -154;
+client.avatarBasePosY = 100;
 client.zIndex = 0;
+client.oldWindowHeight = window.innerHeight;
