@@ -192,11 +192,11 @@ a {
 	height: 100%;
 	overflow: hidden;
 	z-index: 10;
-	-webkit-transition: left 3s ease-in;
-	-moz-transition: left 3s ease-in;
-	-ms-transition: left 3s ease-in;
-	-o-transition: left 3s ease-in;
-	transition: left 3s ease-in;
+	-webkit-transition: left 1s ease-in-out;
+	-moz-transition: left 1s ease-in-out;
+	-ms-transition: left 1s ease-in-out;
+	-o-transition: left 1s ease-in-out;
+	transition: left 1s ease-in-out;
 }
 
 /* Container for avatar character */
@@ -211,12 +211,10 @@ a {
 	-moz-transition: inherit;
 	-ms-transition: inherit;
 	-o-transition: inherit;
-	z-index: 20; /* Draw above all avatar images */
+	z-index: 1; /* Draw above all avatar images */
 }
 .chat-avatar-image {
-	position: absolute;
-	top: 0;
-	left: 0;
+	text-align: center;
 	width: 64px;
 	height: 64px;
 	transform: scale(2, 2);
@@ -234,19 +232,22 @@ a {
 	-moz-transition: inherit;
 	-ms-transition: inherit;
 	-o-transition: inherit;
-	z-index: 10;
 }
 .chat-avatar-name {
 	position: absolute;
-	left: 0;
-	top: -154px;
+	/* left: -83px; */
+	/* top: -154px; */
+	max-width: 250px;
+	width: auto; /* set in js */
 	font-family: name;
 	font-size: 16pt;
 	color: white;
-	background-color: rgba(85, 85, 85, 0.75);
+	background-color: rgba(85, 85, 85, 1);
 	border-radius: 4px;
 	padding: 4px;
+	margin: auto;
 	text-align: center;
+	overflow: hidden;
 	transition: inherit;
 	-webkit-transition: inherit;
 	-moz-transition: inherit;
@@ -261,10 +262,12 @@ a {
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 }
 .chat-avatar-message {
-	position: absolute;
+	display: block;
+	position: relative;
 	opacity: 0;
-	top: -120px;
-	left: 0;
+	/* top: -120px;
+	left: -83px; */
+	width: auto;
 	max-width: 250px;
 	max-height: 75px;
 	padding: 8px;
@@ -281,6 +284,7 @@ a {
 	-ms-transition: opacity 0.6s linear;
 	-o-transition: opacity 0.6s linear;
 	overflow: hidden;
+	z-index: 1000;
 }
 
 /* Chat GUI */

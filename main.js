@@ -459,35 +459,43 @@ function hosting(channel, target, viewers, unhost) {
  * Add a chat avatar
  * @param {string} user The id of the user
  */
-function addAvatar(user) {
+function addAvatar(users, index) {
+	const user = users[index];
 	const avatarsContainer = document.getElementById('chat-avatar-container');
 	const avatarArray = avatarsContainer.children;
-	const userIndex = chatters.indexOf(user);
-	//if (chatters[userIndex] === user) {return;} // Dont draw ourselves
+	const userIndex = users.indexOf(user);
+	client.zIndex += 0.25;
+	const zIndex = client.zIndex;
+	console.log(zIndex);
+
+	// Check number of instances, prevent further draw
+	//if (avatarArray.length > 1) { return; }
 
 	// Create avatar parent node
 	const chatAvatar = document.createElement('div');
 	chatAvatar.className = 'chat-avatar';
 	chatAvatar.id = `${user}-container`;
+	const avatarPosY = getAvatarPosY(zIndex);
+	chatAvatar.style.top = avatarPosY + 'px';
+	chatAvatar.style.zIndex = zIndex;
 	// Create avatar image
 	chatAvatarImage = document.createElement('div');
 	chatAvatarImage.id = user;
 	chatAvatarImage.className = 'chat-avatar-image';
 	chatAvatarImage.facingDir = 1; // Right
-	const PosX = getRandPosX(),
-		  PosY = client.avatarPosY;
-	chatAvatarImage.style.left   = PosX + 'px';
-	chatAvatarImage.style.top    = PosY + 'px';
 	chatAvatarImage.style.width  = client.avatarWidth;
 	chatAvatarImage.style.height = client.avatarHeight;
 	chatAvatarImage.style.transform  = `scale(${chatAvatarImage.facingDir}, 2)`;
 	chatAvatarImage.style.backgroundImage = 'url(assets/avatar_01_right.png)';
-	avatarsContainer.appendChild(chatAvatarImage);
+	chatAvatar.appendChild(chatAvatarImage);
+	avatarsContainer.appendChild(chatAvatar);
 	// Add a name container to avatar
 	const nameContainer = document.createElement('span');
 	nameContainer.id = `${user}-name`;
 	const randHue = Math.floor(Math.random() * 360);
 	nameContainer.style.color = `hsl(${randHue}, 75%, 70%)`;
+	const msgPosY = client.avatarMsgPosY + Math.floor(Math.random() * 48);
+	nameContainer.style.top = `${msgPosY}px`;
 	nameContainer.className = 'chat-avatar-name';
 	nameContainer.innerHTML = user;
 	chatAvatar.appendChild(nameContainer);
@@ -496,10 +504,13 @@ function addAvatar(user) {
 	messageContainer.id = `${user}-message`;
 	messageContainer.className = 'chat-avatar-message';
 	messageContainer.innerHTML = 'A message...';
-	chatAvatar.appendChild(messageContainer);
+	nameContainer.appendChild(messageContainer);
 
 	// Set the update timer
-	const randInterval = Math.max( 1000, Math.floor(Math.random() * 4000) );
+	const maxTime = 6000;
+	const randSecond = Math.floor(Math.random() * maxTime); // add 0-max sec
+	const randInterval = Math.min( maxTime, client.avatarMinUpdateInterval + randSecond );
+
 	chatAvatarImage.updateInterval = setInterval(() => {
 		avatarMove(user);
 	}, randInterval);
@@ -507,13 +518,8 @@ function addAvatar(user) {
 	// Add avatar to container
 	avatarsContainer.appendChild(chatAvatar);
 
-	// Check number of instances
-	// let numAvatars = 0;
-	// for (let index = 0; index < avatarList.length; index++) {
-	// 	const className = avatarList[index].className;
-	// 	if (className === 'chat-avatar-image') {numAvatars++}
-	// }
-	// console.log('avatars:', numAvatars);
+	// Init movement
+	avatarMove(user);
 }
 
 /**
@@ -523,9 +529,12 @@ function addAvatar(user) {
 function removeAvatar(id) {
 	const avatarsContainer = document.getElementById('chat-avatar-container');
 	const avatarImage = document.getElementById(id);
+	clearInterval(avatarImage.updateInterval); // Remove update listener
 	const avatar = document.getElementById(`${id}-container`);
-	avatarsContainer.removeChild(avatar); // Message & Name
-	avatarsContainer.removeChild(avatarImage); // Char image
+	if (avatarsContainer) {
+		avatarsContainer.removeChild(avatar); // Message & Name
+		avatarsContainer.removeChild(avatarImage); // Char image
+	}
 }
 
 /**
@@ -534,47 +543,70 @@ function removeAvatar(id) {
  */
 function avatarMove(id) {
 	const avatarImage = document.getElementById(id);
-	if (!avatarImage) {return;}
+	const avatarContainer = document.getElementById(`${id}-container`);
+	if (!avatarImage || !avatarContainer) {return;}
 
-	const avatarContainer = document.getElementById(`${id}-container`),
-		  avatarName = document.getElementById(`${id}-name`),
+	const avatarName = document.getElementById(`${id}-name`),
 		  avatarMessage = document.getElementById(`${id}-message`),
-		  randX = getRandPosX(),
-		  currentPos = parseInt(avatarImage.style.left, 10);
-	if (randX > currentPos) {
-		avatarImage.facingDir = 2; // Right
-	} else if (randX < currentPos) {
-		avatarImage.facingDir = -2; // Left
-	}
-	// Update image
-	if (avatarImage) {
-		avatarImage.style.transition = 'left 3s ease-in';
-		avatarImage.style.left = randX + 'px';
-		avatarImage.style.top = getAvatarPosY() + 'px';
-		avatarImage.style.transform = `scale(${avatarImage.facingDir}, 2)`;
-	}
+		  scale = 2,
+		  positionAndFacing = getRandPosX(avatarImage),
+		  randX = positionAndFacing[0],
+		  facingDir = positionAndFacing[1] * scale;
+
+	// Set facing direction
+	avatarImage.facingDir = facingDir;
+	// Update avatar image
+	avatarImage.style.transform = `scale(${avatarImage.facingDir}, ${Math.abs(avatarImage.facingDir)})`;
 	// Update parent container
-	if (avatarContainer) {
-		avatarContainer.style.left = parseInt(avatarImage.style.left, 10) - Math.floor(avatarContainer.clientWidth / 2) + 'px';
-		avatarContainer.style.top = getAvatarPosY() + 'px';
+	avatarContainer.style.transition = 'left 2s ease-in-out';
+	avatarContainer.style.left = randX + 'px';
+
+	// Set message bubble position
+	if (avatarMessage.style.opacity <= 0) {
+		avatarMessage.style.display = 'none';
+	} else {
+		avatarMessage.style.display = 'block';
 	}
+	const containerCenter = (avatarContainer.clientWidth) / 2;
+	const nameCenter = parseInt(avatarName.clientWidth, 10) / 2;
+	const currPos = parseInt(avatarContainer.clientLeft, 10);
+	const center = currPos - nameCenter + (client.avatarWidth / 2);
+	avatarName.style.left = `${center}px`;
 }
 
 /**
  * Get a random X position on screen
  */
-function getRandPosX() {
-	const randX = Math.max( 0, Math.floor(Math.random() * window.innerWidth) - client.avatarWidth );
-	return randX;
+function getRandPosX(container) {
+	let pos;
+	const bool = Math.round(Math.random() * 2) % 2; // Pick true or false
+	const randBaseScale = (Math.random() * 5) * 100;
+	let randOffset = Math.round(Math.random() * randBaseScale); // random val 0-scale
+	randOffset = Math.max(50, randOffset); // minimum
+	const windowWidthMin = 32; // Left screen bound
+	const windowWidthMax = window.innerWidth - client.avatarWidth + 32; // Right screen bound
+	let facing = 1;
+
+	if ( bool === 0 ) {
+		pos = parseInt(container.getBoundingClientRect().left, 10) - randOffset;
+		if (pos < windowWidthMin) { pos = windowWidthMin; }
+		facing = -1;
+	} else {
+		pos = parseInt(container.getBoundingClientRect().right, 10) + randOffset;
+		if (pos > windowWidthMax) { pos = windowWidthMax; }
+		facing = 1;
+	}
+
+	return [pos, facing];
 }
 
 /**
  * Get the fixed avatar Y position
  */
-function getAvatarPosY() {
-	const offset = 40;
-	const jitter = Math.floor( Math.random() * 10 );
-	const Y = window.innerHeight - offset - jitter - client.avatarHeight;
+function getAvatarPosY(index) {
+	const pos = 100;
+	const jitter = Math.floor( Math.random() * 25 );
+	const Y = window.innerHeight - pos - client.avatarHeight + index;
 	return Y;
 }
 
@@ -597,7 +629,7 @@ client.addListener('connectfail', function () {
 		if(showConnectionNotices) chatNotice('Connection failed', 1000, 3, 'chat-connection-bad-fail');
 	});
 client.addListener('connected', function (address, port) {
-		if(showConnectionNotices) chatNotice('Connected', 1000, -2, 'chat-connection-good-connected');
+		if(showConnectionNotices) chatNotice(`Connected to ${document.channelName}`, 1000, -2, 'chat-connection-good-connected');
 		joinAnnounced = [];
 	});
 client.addListener('disconnected', function (reason) {
@@ -608,13 +640,11 @@ client.addListener('reconnect', function () {
 	});
 // User joined channel
 client.addListener('join', function (channel, username) {
-	if(username !== client.getUsername()) {
-		//if(showConnectionNotices) chatNotice('Joined ' + capitalize(dehash(channel)) + ' => ' + username, 1000, -1, 'chat-room-join');
-		joinAnnounced.push(channel);
-		playAudio(SoundJoin);
-		addChattersList(username);
-		addAvatar(username);
-	}
+	//if(showConnectionNotices) chatNotice('Joined ' + capitalize(dehash(channel)) + ' => ' + username, 1000, -1, 'chat-room-join');
+	joinAnnounced.push(channel);
+	playAudio(SoundJoin);
+	addChattersList(username);
+	addAvatar(chatters, chatters.indexOf(username));
 });
 // User left channel
 client.addListener('part', function (channel, username) {
@@ -636,7 +666,7 @@ client.addListener('names', function (channel, users) {
 	for (let index = 0; index < users.length; index++) {
 		let e = users[index] + ', ';
 		s += e;
-		addAvatar(users[index]);
+		if (users[index] !== chatters[index]) { addAvatar(users, index); }
 	}
 
 	chatNotice('Users: ' + s, 1000, 1, 'chat-room-part');
@@ -730,7 +760,7 @@ function muteMe(btn) {
  */
 function login() {
 	// Validate entries
-	var ch = document.forms["loginForm"]["channel-name"].value;
+	const ch = document.forms["loginForm"]["channel-name"].value;
 	//var cid = document.forms["loginForm"]["client-id"].value;
 	//var usr = document.forms["loginForm"]["username"].value;
 	//var pss = document.forms["loginForm"]["password"].value;
@@ -745,6 +775,7 @@ function login() {
 		//
 		// Set vars
 		channels.push( ch.toLowerCase() );
+		document.channelName = ch.toLowerCase();
 		//clientOptions.options.clientId = document.getElementById("client").value;
 		//clientOptions.identity.username = (document.getElementById("uname").value).toLowerCase();
 		//clientOptions.identity.password = document.getElementById("pword").value;
@@ -765,8 +796,9 @@ function login() {
 // Main Loop ////
 /////////////////
 //
-// Vars
-client.avatarUpdateInterval = 4000;
+// Global Vars
+client.avatarMinUpdateInterval = 2000;
 client.avatarWidth = 64;
 client.avatarHeight = 64;
-client.avatarPosY = getAvatarPosY();
+client.avatarMsgPosY = -154;
+client.zIndex = 0;
