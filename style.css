@@ -285,16 +285,18 @@ a {
 	white-space: nowrap;
 }
 #sidebar {
-	box-sizing: border-box;
-	display: inline-flex;
+	/* box-sizing: border-box; */
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	width: calc(100% - 165px); /* Dont cover options menu */
+	width: calc(100% - 180px); /* Dont cover options menu */
+	max-width: 750px;
 	height: 100%;
 	margin: auto;
 	margin-left: 0;
-	padding: 8px;
+	padding: 0;
+	padding-left: 10px;
 	z-index: 1;
 }
 #uber-chat {
@@ -333,8 +335,7 @@ a {
 	height: 100%;
 	width: 100%;
 	padding: 0;
-	margin: auto;
-	margin-top: 8px;
+	margin: 8px;
 	overflow: hidden;
 	word-wrap: wrap;
 	white-space: wrap;
@@ -350,8 +351,7 @@ a {
 	width: 100%;
 	height: 100%;
 	padding: 0;
-	margin: auto;
-	margin-bottom: 8px;
+	margin: 8px;
 	overflow: hidden;
 	word-wrap: wrap;
 	white-space: wrap;
