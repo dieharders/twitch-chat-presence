@@ -267,6 +267,11 @@ a {
 ::-webkit-scrollbar-corner {
     background-color: hsla(250, 80%, 65%, 0.5);
 }
+/* For Firefox */
+.scroller {
+	scrollbar-color: rgb(105, 86, 199) hsla(250, 80%, 65%, 0.5);
+	scrollbar-width: thin;
+}
 
 /* Chat GUI */
 #container {
