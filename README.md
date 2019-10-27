@@ -1,5 +1,6 @@
 # Twitch: Chat Presence
-![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/assets/preview-2.jpg)
+![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/assets/preview-1.jpg)
+![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/assets/preview-2.png)
 
 ## Info
 There is no back-end required; Twitch provides all the chat/user information via the module `tmi.min.js`. The app simply styles the chat rooms in a way that provides the owner of the room some specific feedback.
