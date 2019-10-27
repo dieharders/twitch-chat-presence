@@ -461,9 +461,9 @@ function hosting(channel, target, viewers, unhost) {
  */
 function addAvatar(user) {
 	const avatarsContainer = document.getElementById('chat-avatar-container');
-	const avatarList = avatarsContainer.children;
+	const avatarArray = avatarsContainer.children;
 	const userIndex = chatters.indexOf(user);
-	if (chatters[userIndex] === user) {return;}
+	//if (chatters[userIndex] === user) {return;} // Dont draw ourselves
 
 	// Create avatar parent node
 	const chatAvatar = document.createElement('div');
