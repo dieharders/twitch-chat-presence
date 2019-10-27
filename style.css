@@ -53,7 +53,7 @@ p {
 	display: block;
 	position: relative;
 	height: 100%;
-	width: 45%;
+	width: 70%;
 	margin: auto;
 	padding: 4px;
 }
@@ -354,8 +354,7 @@ a {
 	margin: auto;
 	padding: 10px;
 	padding-bottom: 0;
-	overflow: hidden;
-	overflow-y: auto;
+	overflow: auto;
 }
 #debug-list {
 	height: calc(100% - 47px);
