@@ -33,6 +33,7 @@ h4 {
 
 p {
 	font-size: 16pt;
+	text-align: center;
 }
 
 #logo {
@@ -53,7 +54,8 @@ p {
 	display: block;
 	position: relative;
 	height: 100%;
-	width: 70%;
+	width: 75%;
+	max-width: 650px;
 	margin: auto;
 	padding: 4px;
 }
@@ -143,6 +145,34 @@ a {
     -moz-transition: none !important;
     -o-transition: none !important;
     transition: none !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	background: hsla(250, 80%, 65%, 0.5);
+}
+::-webkit-scrollbar-thumb {
+	background: rgb(105, 86, 199);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgb(133, 109, 255);
+}
+::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+::-webkit-scrollbar-corner {
+    background-color: hsla(250, 80%, 65%, 0.5);
+}
+/* For Firefox */
+.scroller {
+	scrollbar-color: rgb(105, 86, 199) hsla(250, 80%, 65%, 0.5);
+	scrollbar-width: thin;
 }
 
 /* Chat Avatars */
@@ -245,34 +275,6 @@ a {
 	overflow: hidden;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-	width: 10px;
-	height: 10px;
-}
-::-webkit-scrollbar-track {
-	background: hsla(250, 80%, 65%, 0.5);
-}
-::-webkit-scrollbar-thumb {
-	background: rgb(105, 86, 199);
-}
-::-webkit-scrollbar-thumb:hover {
-	background: rgb(133, 109, 255);
-}
-::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
-    display: none;
-}
-::-webkit-scrollbar-corner {
-    background-color: hsla(250, 80%, 65%, 0.5);
-}
-/* For Firefox */
-.scroller {
-	scrollbar-color: rgb(105, 86, 199) hsla(250, 80%, 65%, 0.5);
-	scrollbar-width: thin;
-}
-
 /* Chat GUI */
 #container {
 	position: relative;
@@ -282,20 +284,31 @@ a {
 	height: 100%;
 	white-space: nowrap;
 }
-
 #sidebar {
 	box-sizing: border-box;
-	display: flex;
+	display: inline-flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	max-width: 30%;
-	width: auto;
+	width: calc(100% - 165px); /* Dont cover options menu */
 	height: 100%;
 	margin: auto;
 	margin-left: 0;
 	padding: 8px;
 	z-index: 1;
+}
+#uber-chat {
+	box-sizing: border-box;
+	position: relative;
+	display: inline-block;
+	height: 100vh;
+	width: 170%;
+	margin: auto;
+	padding: 1em;
+	overflow: hidden;
+	word-wrap: wrap;
+	overflow-y: auto;
+	flex-grow: 1;
 }
 
 /* Viewer List */
@@ -363,19 +376,6 @@ a {
 	height: calc(100% - 50px);
 }
 /* Chat Messages */
-#uber-chat {
-	box-sizing: border-box;
-	position: relative;
-	display: inline-block;
-	height: 100vh;
-	width: 100%;
-	margin: auto;
-	padding: 1em;
-	overflow: hidden;
-	word-wrap: wrap;
-	overflow-y: auto;
-	flex-grow: 1;
-}
 
 .chat-line {
 	-webkit-transition: all 0.25s ease-in;
