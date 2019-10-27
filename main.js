@@ -757,7 +757,7 @@ function login() {
 		document.getElementById('container').style.display = '-webkit-flex';
 		document.getElementById('button-container').style.display = 'block';
 		// Hide login
-		document.getElementById('login').style.display = 'none';
+		document.getElementById('login-container').style.display = 'none';
 	}
 }
 

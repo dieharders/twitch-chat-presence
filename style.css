@@ -49,11 +49,12 @@ p {
 	border-radius: 0.35em;
 }
 
-.loginContainer {
+#login-container {
 	display: block;
 	width: 100%;
 	height: 100%;
 	overflow: auto;
+	overflow-x: hidden;
 }
 #login {
 	display: block;
