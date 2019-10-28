@@ -1,5 +1,13 @@
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
+const avatarSprites = ['url(assets/avatar_01_mario_right.png)',
+					   'url(assets/avatar_02_princess_right.png)',
+					   'url(assets/avatar_03_bowser_right.png)',
+					   'url(assets/avatar_04_koopa_right.png)',
+					   'url(assets/avatar_05_kong_right.png)',
+					   'url(assets/avatar_06_yoshi_right.png)',
+					   'url(assets/avatar_07_toad_right.png)'
+];
 var channels = [], 		 // Channels to initially join
 	fadeDelay = 10000,   // Set to false to disable chat fade
 	showChannel = true,  // Show respective channels if the channels is longer than 1
@@ -488,7 +496,8 @@ function addAvatar(users, index) {
 	chatAvatarImage.style.width  = client.avatarWidth;
 	chatAvatarImage.style.height = client.avatarHeight;
 	chatAvatarImage.style.transform  = `scale(${chatAvatarImage.facingDir}, 2)`;
-	chatAvatarImage.style.backgroundImage = 'url(assets/avatar_01_right.png)';
+	const randSpriteIndex = Math.floor(Math.random() * (avatarSprites.length - 1) );
+	chatAvatarImage.style.backgroundImage = avatarSprites[randSpriteIndex];
 	chatAvatar.appendChild(chatAvatarImage);
 	avatarsContainer.appendChild(chatAvatar);
 	// Add a name container to avatar
