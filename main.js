@@ -547,6 +547,8 @@ function removeAvatar(id) {
 function avatarMove(id) {
 	const avatarImage = document.getElementById(id);
 	const avatarContainer = document.getElementById(`${id}-container`);
+	const ind = chatters.indexOf(id);
+
 	if (!avatarImage || !avatarContainer) {return;}
 
 	const avatarName = document.getElementById(`${id}-name`),
@@ -592,11 +594,11 @@ function getRandPosX(container) {
 
 	if ( bool === 0 ) {
 		pos = parseInt(container.getBoundingClientRect().left, 10) - randOffset;
-		if (pos < windowWidthMin) { pos = windowWidthMin; }
+		if (pos < windowWidthMin) { pos = windowWidthMin + 32; }
 		facing = -1;
 	} else {
 		pos = parseInt(container.getBoundingClientRect().right, 10) + randOffset;
-		if (pos > windowWidthMax) { pos = windowWidthMax; }
+		if (pos > windowWidthMax) { pos = windowWidthMax - 32; }
 		facing = 1;
 	}
 
