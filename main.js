@@ -7,7 +7,7 @@ const avatarSprites = ['url(assets/avatar_01_mario_right.png)',
 					   'url(assets/avatar_05_kong_right.png)',
 					   'url(assets/avatar_06_yoshi_right.png)',
 					   'url(assets/avatar_07_toad_right.png)'
-];
+					  ];
 var channels = [], 		 // Channels to initially join
 	fadeDelay = 10000,   // Set to false to disable chat fade
 	showChannel = true,  // Show respective channels if the channels is longer than 1
@@ -505,7 +505,7 @@ function addAvatar(users, index) {
 	nameContainer.id = `${user}-name`;
 	const randHue = Math.floor(Math.random() * 360);
 	nameContainer.style.color = `hsl(${randHue}, 75%, 70%)`;
-	const msgPosY = client.avatarMsgPosY + Math.floor(Math.random() * 48);
+	const msgPosY = client.avatarMsgPosY - Math.floor(Math.random() * 100);
 	nameContainer.style.top = `${msgPosY}px`;
 	nameContainer.className = 'chat-avatar-name';
 	nameContainer.innerHTML = user;
