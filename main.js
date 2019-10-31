@@ -284,7 +284,8 @@ function handleChat(channel, user, message, self) {
 		chatChannel = document.createElement('span'),
 		chatName = document.createElement('span'),
 		chatColon = document.createElement('span'),
-		avatar = document.getElementById(`${name}-container`)
+		avatarMessageContainer = document.getElementById(`${name}-name`),
+		avatar = document.getElementById(`${name}-container`),
 		avatarMessage = document.getElementById(`${name}-message`),
 		avatarImage = document.getElementById(name),
 		chatMessage = document.createElement('span');
@@ -365,17 +366,26 @@ function handleChat(channel, user, message, self) {
 	}
 
 	// Set the message on the avatar speech bubble
+	if (message.length > 0 && avatarMessageContainer) {
+		avatarMessageContainer.style.opacity = 1;
+	}
+
 	if (message.length > 0 && avatarMessage) {
-		avatarMessage.style.opacity = 100;
+		avatarMessage.style.opacity = 1;
 		avatarMessage.innerHTML = message;
 		// avatar.style.zIndex = 30; // Draw above other avatars
 		// avatarImage.style.zIndex = 20;
+
 		// Remove previous timer
 		clearTimeout(avatarMessage.messageTimer);
+
 		// Fade out the message after X seconds
 		avatarMessage.messageTimer = setTimeout( ()=> {
 			if (avatarMessage) {
 				avatarMessage.style.opacity = 0;
+			}
+			if (avatarMessageContainer) {
+				avatarMessageContainer.style.opacity = 0;
 			}
 			// avatar.style.zIndex = 20; // Reset depth to default
 			// avatarImage.style.zIndex = 10;
@@ -507,6 +517,7 @@ function addAvatar(users, index) {
 	nameContainer.style.color = `hsl(${randHue}, 75%, 70%)`;
 	const msgPosY = client.avatarMsgPosY - Math.floor(Math.random() * 100);
 	nameContainer.style.top = `${msgPosY}px`;
+	nameContainer.style.opacity = 0;
 	nameContainer.className = 'chat-avatar-name';
 	nameContainer.innerHTML = user;
 	chatAvatar.appendChild(nameContainer);
@@ -578,8 +589,10 @@ function avatarMove(id) {
 	// Set message bubble position
 	if (avatarMessage.style.opacity <= 0) {
 		avatarMessage.style.display = 'none';
+		avatarName.style.display = 'none';
 	} else {
 		avatarMessage.style.display = 'block';
+		avatarName.style.display = 'block';
 	}
 	const containerCenter = (avatarContainer.clientWidth) / 2;
 	const nameCenter = parseInt(avatarName.clientWidth, 10) / 2;
@@ -827,10 +840,10 @@ function resetAvatarPosY() {
 //
 window.onresize = resetAvatarPosY;
 // Global Vars
-client.avatarMinUpdateInterval = 2000;
+client.avatarMinUpdateInterval = 2000; // seconds
 client.avatarWidth = 64;
 client.avatarHeight = 64;
 client.avatarMsgPosY = -154;
-client.avatarBasePosY = 100;
+client.avatarBasePosY = 75;
 client.zIndex = 0;
 client.oldWindowHeight = window.innerHeight;
