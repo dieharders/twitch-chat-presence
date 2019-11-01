@@ -1,0 +1,22 @@
+{
+  "name": "twitch-chat-presence",
+  "version": "1.0.0",
+  "description": "![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/assets/preview-1.jpg) ![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/assets/preview-2.png)",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dieharders/twitch-chat-presence.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dieharders/twitch-chat-presence/issues"
+  },
+  "homepage": "https://github.com/dieharders/twitch-chat-presence#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  }
+}

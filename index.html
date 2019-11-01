@@ -66,16 +66,16 @@
 
 <!-- Chat Options Menu -->
 <div id="button-container">
-    <button class="hideBtn" onclick="hideMe('chat', this)" value="DEBUG"><div class="optionsContent">🔲 Hide DEBUG</div></button><br>
-    <button class="hideBtn" onclick="hideMe('chatters', this)" value="VIEWERS"><div class="optionsContent">🔲 Hide VIEWERS</div></button><br>
-    <button class="hideBtn" onclick="hideMe('uber-chat', this)" value="CHAT"><div class="optionsContent">🔲 Hide CHAT</div></button><br>
-    <button class="hideBtn" onclick="hideMe('chat-avatar-container', this)" value="AVATARS"><div class="optionsContent">🔳 Show AVATARS</div></button><br>
+    <button class="hideBtn" onclick="hideMenu('chat', this)" name="DEBUG" value="true"><div class="optionsContent">🔲 Hide DEBUG</div></button><br>
+    <button class="hideBtn" onclick="hideMenu('chatters', this)" name="VIEWERS" value="true"><div class="optionsContent">🔲 Hide VIEWERS</div></button><br>
+    <button class="hideBtn" onclick="hideMenu('uber-chat', this)" name="CHAT" value="true"><div class="optionsContent">🔲 Hide CHAT</div></button><br>
+    <button class="hideBtn" onclick="hideMenu('chat-avatar-container', this)" name="AVATARS" value="false"><div class="optionsContent">🔳 Show AVATARS</div></button><br>
     <button class="hideBtn" onclick="muteMe(this)" value="false">🔊 MUTE</button>
 </div>
 <!-- /Chat Options Menu -->
 
 <!-- Load Scripts -->
-<script type="text/javascript" src="tmi.min.js"></script>
+<script type="text/javascript" type="module" src="tmi.min.js"></script>
 <script type="text/javascript" defer src="main.js"></script>
 <!-- /Load Scripts -->
 
