@@ -2,7 +2,6 @@
 
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-// TODO: Fix adding duplicate `justinfan123` chatters
 // TODO: Show transparent icon indicator for settings menu
 // TODO: Put recently joined/left user names at top of list
 // TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
@@ -156,14 +155,28 @@ client.addListener('part', function (channel, username) {
 client.addListener('names', function (channel, users) {
 	console.log('Users list updated: ' + users);
 
+	const duplicateUserIndexes = [];
+
 	let s = '';
 	for (let index = 0; index < users.length; index++) {
 		let e = users[index] + ', ';
-		s += e;
-		if (users[index] !== chatters[index]) { addAvatar(users, index); }
+
+		// Dont add duplicate user
+		if (users[index] !== chatters[index]) {
+			addAvatar(users, index);
+			s += e;
+		}
+		// Track duplicate users
+		else { duplicateUserIndexes.push(index); }
 	}
 
-	chatNotice('Users: ' + s, 1000, 1, 'chat-room-part');
+	// Remove user from new list if already in chat
+	for (let index = 0; index < duplicateUserIndexes.length; index++) {
+		const userIndex = duplicateUserIndexes[index];
+		users.splice(userIndex, 1, '');
+	}
+
+	chatNotice('Users added: ' + s, 1000, 1, 'chat-room-part');
 	getChattersList(users);
 });
 // Crash
