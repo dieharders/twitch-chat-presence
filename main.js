@@ -2,14 +2,13 @@
 
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-// TODO: Show transparent icon indicator for settings menu
 // TODO: Put recently joined/left user names at top of list
 // TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
 // TODO: Ability to change up/down sorting of messages
 // TODO: Make view resize for mobile screen
 // TODO: Add buttons to menus for stretching/shrinking size
 // TODO: Add sprite animations to avatars
-// TODO: Port to new `Twitch API`
+// TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
 
 /////////////////
 // Main Loop ////
@@ -929,6 +928,7 @@ function login() {
 		document.getElementById('container').style.display = 'flex';
 		document.getElementById('container').style.display = '-webkit-flex';
 		document.getElementById('button-container').style.display = 'block';
+		document.getElementById('settings-icon').style.display = 'block';
 		// Hide login
 		document.getElementById('login-container').style.display = 'none';
 	}

@@ -89,6 +89,26 @@ input[type=text], select {
 	border-radius: 4px;
 }
 
+#settings-icon {
+	display: none;
+	position: absolute;
+	right: 1em;
+	top: 1em;
+	opacity: 0.25;
+	padding: 6px;
+	height: 24px;
+	width: 24px;
+	z-index: 99;
+	border-style: solid;
+	border-radius: 24px;
+	border-width: 2px;
+	background-color: white;
+	background-image: url('assets/icon-settings.png');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50%, 50%;
+}
+
 #button-container {
 	display: none;
 	opacity: 0;
