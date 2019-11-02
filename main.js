@@ -9,7 +9,7 @@
 // TODO: Ability to change up/down sorting of messages
 // TODO: Make view resize for mobile screen
 // TODO: Add buttons to menus for stretching/shrinking size
-// TODO: Add sprite animations
+// TODO: Add sprite animations to avatars
 // TODO: Port to new `Twitch API`
 
 /////////////////
@@ -25,9 +25,9 @@ window.onresize = handleWindowResizeEvent;
 
 // Audio //
 let audioMute       = false;
-const SoundJoin     = new Audio('assets/join.wav');
+const SoundJoin     = new Audio('assets/join.mp3');
 SoundJoin.volume    = 0.5;
-const SoundLeave    = new Audio('assets/leave.wav');
+const SoundLeave    = new Audio('assets/leave.mp3');
 SoundLeave.volume   = 0.7;
 const SoundMessage  = new Audio('assets/message.mp3');
 SoundMessage.volume = 0.025;
