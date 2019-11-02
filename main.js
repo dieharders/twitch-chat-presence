@@ -868,6 +868,8 @@ function hideMenu(menuName, button) {
 	if (button.value === 'false') {
 		menu.style.display = 'inline-block';
 		button.value = 'true';
+		// Scroll chat to bottom
+		menu.scrollTo(0, menu.scrollHeight);
 	} else {
 		menu.style.display = 'none';
 		button.value = 'false';
