@@ -2,13 +2,13 @@
 
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-// TODO: Put recently joined/left user names at top of list
+// TODO: Make view resize for mobile screen
+// TODO: Add sprite animations to avatars
+
+// TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
 // TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
 // TODO: Ability to change up/down sorting of messages
-// TODO: Make view resize for mobile screen
 // TODO: Add buttons to menus for stretching/shrinking size
-// TODO: Add sprite animations to avatars
-// TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
 
 /////////////////
 // Main Loop ////
@@ -383,7 +383,7 @@ function editChatters(chatter, status) {
 		e = `<span style="color: ${col}">` + chatter + '</span>' + '<br>';
 		level = 3;
 	}
-	htmlChatters.push([e, level]);
+	htmlChatters.unshift([e, level]);
 
 	setChatters();
 	// Update chat message names
@@ -411,7 +411,7 @@ function removeChattersList(user) {
 // Add user to chat list
 function addChattersList(user) {
 	console.log(`User ${user} joined...`);
-	chatters.push(user);
+	chatters.unshift(user);
 	editChatters(user, true);
 	chatNotice('Added ' + user + ' ::: ' +'viewers: ' + chatters.length, 1000, -1, 'chat-room-part');
 }

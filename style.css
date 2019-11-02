@@ -42,7 +42,7 @@ p {
 	padding: 32px;
 	margin: auto;
 	margin-top: 14px;
-	background-image: url('twitchlogo.png');
+	background-image: url('./assets/twitchlogo.png');
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: calc(50% - 32px), 50%;
@@ -103,10 +103,13 @@ input[type=text], select {
 	border-radius: 24px;
 	border-width: 2px;
 	background-color: white;
-	background-image: url('assets/icon-settings.png');
+	background-image: url('assets/icon-settings.svg');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50%, 50%;
+}
+#settings-icon:hover {
+	opacity: 1;
 }
 
 #button-container {
