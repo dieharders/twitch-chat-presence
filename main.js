@@ -1,13 +1,22 @@
 /* eslint-disable no-console */
+
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-// TODO: Fix scroll-lock. Becomes unstuck to bottom when resizing window-y
+// TODO: Fix adding duplicate `justinfan123` chatters
+// TODO: Show transparent icon indicator for settings menu
+// TODO: Put recently joined/left user names at top of list
+// TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
+// TODO: Ability to change up/down sorting of messages
+// TODO: Make view resize for mobile screen
+// TODO: Add buttons to menus for stretching/shrinking size
+// TODO: Add sprite animations
+// TODO: Port to new `Twitch API`
 
 /////////////////
 // Main Loop ////
 /////////////////
 //
-window.onresize = resetAvatarPosY;
+window.onresize = handleWindowResizeEvent;
 
 /////////////////
 // Vars /////////
@@ -15,13 +24,13 @@ window.onresize = resetAvatarPosY;
 //
 
 // Audio //
-let audioMute = false;
-const SoundJoin = new Audio('assets/join.wav');
-SoundJoin.volume=0.5;
-const SoundLeave = new Audio('assets/leave.wav');
-SoundLeave.volume=0.7;
-const SoundMessage = new Audio('assets/message.mp3');
-SoundMessage.volume=0.025;
+let audioMute       = false;
+const SoundJoin     = new Audio('assets/join.wav');
+SoundJoin.volume    = 0.5;
+const SoundLeave    = new Audio('assets/leave.wav');
+SoundLeave.volume   = 0.7;
+const SoundMessage  = new Audio('assets/message.mp3');
+SoundMessage.volume = 0.025;
 
 // Sprites //
 const avatarSprites = 	[
@@ -49,24 +58,40 @@ let joinAnnounced;
 var recentTimeouts = {};
 var chatters = [];
 var htmlChatters = [];
-var chat = document.getElementById('debug-list'),
-	defaultColors = ['rgb(255, 0, 0)','rgb(0, 0, 255)','rgb(0, 128, 0)','rgb(178, 34, 34)','rgb(255, 127, 80)','rgb(154, 205, 50)','rgb(255, 69, 0)','rgb(46, 139, 87)','rgb(218, 165, 32)','rgb(210, 105, 30)','rgb(95, 158, 160)','rgb(30, 144, 255)','rgb(255, 105, 180)','rgb(138, 43, 226)','rgb(0, 255, 127)'],
-	randomColorsChosen = {},
-	clientOptions = {
-		options: {
-			debug: true,
-			clientId: '' //<your-app-client-id> *Needed if you want to post messages for another account
-		},
-		connection: {
-			reconnect: true,
-			secure: true
-		},
-		identity: {
-			username: 'justinfan123', //Anon account
-			password: 'oath:' //oath:<your-bot-oauth>
-		},
-		channels: channels
-	}
+var chat = document.getElementById('debug-list');
+var	defaultColors = [
+					'rgb(255, 0, 0)',
+					'rgb(0, 0, 255)',
+					'rgb(0, 128, 0)',
+					'rgb(178, 34, 34)',
+					'rgb(255, 127, 80)',
+					'rgb(154, 205, 50)',
+					'rgb(255, 69, 0)',
+					'rgb(46, 139, 87)',
+					'rgb(218, 165, 32)',
+					'rgb(210, 105, 30)',
+					'rgb(95, 158, 160)',
+					'rgb(30, 144, 255)',
+					'rgb(255, 105, 180)',
+					'rgb(138, 43, 226)',
+					'rgb(0, 255, 127)'
+					];
+var	randomColorsChosen = {};
+var	clientOptions = {
+	options: {
+		debug: true,
+		clientId: '' //<your-app-client-id> *Needed if you want to post messages for another account
+	},
+	connection: {
+		reconnect: true,
+		secure: true
+	},
+	identity: {
+		username: 'justinfan123', //Anon account
+		password: 'oath:' //oath:<your-bot-oauth>
+	},
+	channels: channels
+}
 
 // Client Vars //
 const client = new tmi.client(clientOptions);
@@ -88,24 +113,24 @@ client.addListener('hosting', hosting);
 client.addListener('unhost', function(channel, viewers) { hosting(channel, null, viewers, true) });
 
 client.addListener('connecting', function (address, port) {
-		if(showConnectionNotices) chatNotice('Connecting', 1000, -4, 'chat-connection-good-connecting');
-	});
+	if (showConnectionNotices) chatNotice('Connecting', 1000, -4, 'chat-connection-good-connecting');
+});
 client.addListener('logon', function () {
-		if(showConnectionNotices) chatNotice('Authenticating', 1000, -3, 'chat-connection-good-logon');
-	});
+	if (showConnectionNotices) chatNotice('Authenticating', 1000, -3, 'chat-connection-good-logon');
+});
 client.addListener('connectfail', function () {
-		if(showConnectionNotices) chatNotice('Connection failed', 1000, 3, 'chat-connection-bad-fail');
-	});
+	if (showConnectionNotices) chatNotice('Connection failed', 1000, 3, 'chat-connection-bad-fail');
+});
 client.addListener('connected', function (address, port) {
-		if(showConnectionNotices) chatNotice(`Connected to ${document.channelName}`, 1000, -2, 'chat-connection-good-connected');
-		joinAnnounced = [];
-	});
+	if (showConnectionNotices) chatNotice(`Connected to ${document.channelName}`, 1000, -2, 'chat-connection-good-connected');
+	joinAnnounced = [];
+});
 client.addListener('disconnected', function (reason) {
-		if(showConnectionNotices) chatNotice('Disconnected: ' + (reason || ''), 3000, 2, 'chat-connection-bad-disconnected');
-	});
+	if (showConnectionNotices) chatNotice('Disconnected: ' + (reason || ''), 3000, 2, 'chat-connection-bad-disconnected');
+});
 client.addListener('reconnect', function () {
-		if(showConnectionNotices) chatNotice('Reconnected', 1000, 'chat-connection-good-reconnect');
-	});
+	if (showConnectionNotices) chatNotice('Reconnected', 1000, 'chat-connection-good-reconnect');
+});
 // User joined channel
 client.addListener('join', function (channel, username) {
 	//if(showConnectionNotices) chatNotice('Joined ' + capitalize(dehash(channel)) + ' => ' + username, 1000, -1, 'chat-room-join');
@@ -117,7 +142,8 @@ client.addListener('join', function (channel, username) {
 // User left channel
 client.addListener('part', function (channel, username) {
 	const index = joinAnnounced.indexOf(channel);
-	if(index > -1) {
+
+	if (index > -1) {
 		//if(showConnectionNotices) chatNotice('Departed ' + capitalize(dehash(channel)) + ' => ' + username, 1000, 3, 'chat-room-part');
 		joinAnnounced.splice(joinAnnounced.indexOf(channel), 1);
 		playAudio(SoundLeave);
@@ -144,6 +170,19 @@ client.addListener('names', function (channel, users) {
 client.addListener('crash', function () {
 	chatNotice('Crashed', 10000, 4, 'chat-crash');
 });
+
+///////////////////
+// Logic //////////
+///////////////////
+
+/**
+ * Logic for handling user resizing window
+ */
+function handleWindowResizeEvent() {
+	resetAvatarPosY();
+	// Prevent scrollbar from unlocking.
+	lockChatScroll( document.getElementById('uber-chat') );
+}
 
 /**
  * Clean the channel name of extraneous chars from server
@@ -403,9 +442,8 @@ function handleChat(channel, user, message, self) {
 		avatarImage = document.getElementById(name),
 		chatMessage = document.createElement('span');
 
-	// Chatter color
-	var color = setUserColor(-1);
 	// Set Chatter Name color
+	var color = setUserColor(-1);
 	var nameColor = useColor ? user.color : 'inherit';
 	if (nameColor === null) {
 		if (!randomColorsChosen.hasOwnProperty(chan)) {
@@ -471,12 +509,7 @@ function handleChat(channel, user, message, self) {
 		for (var i in oldMessages) oldMessages[i].remove();
 	}
 
-	// Auto Scroll to bottom of page if already at bottom
-	let scrollH = (div.scrollTop + div.offsetHeight)+120;
-	if (scrollH >= div.scrollHeight || div.offsetHeight == div.scrollHeight)
-	{
-		div.scrollTo(0, div.scrollHeight);
-	}
+	lockChatScroll(div);
 
 	// Set the message on the avatar speech bubble
 	if (message.length > 0 && avatarMessageContainer) {
@@ -503,6 +536,18 @@ function handleChat(channel, user, message, self) {
 			// avatar.style.zIndex = 20; // Reset depth to default
 			// avatarImage.style.zIndex = 10;
 		}, 8000);
+	}
+}
+
+/**
+ * Auto Scroll to bottom of page if already at bottom
+ * @param {HTMLElement} element
+ */
+function lockChatScroll(element) {
+	let scrollH = (element.scrollTop + element.offsetHeight)+120;
+	if (scrollH >= element.scrollHeight || element.offsetHeight == element.scrollHeight)
+	{
+		element.scrollTo(0, element.scrollHeight);
 	}
 }
 
@@ -754,6 +799,23 @@ function getAvatarPosY(index) {
 }
 
 /**
+ * Move avatars back to correct Y Position when window is resizing
+ */
+function resetAvatarPosY() {
+	// const diff = window.innerHeight - client.oldWindowHeight;
+	// console.log(diff);
+
+	const container = document.getElementById('chat-avatar-container');
+	const children = container.children;
+
+	for (let i = 0; i < children.length; i++) {
+		const avatar = children[i];
+		const sort = i*0.25;
+		avatar.style.top = getAvatarPosY(sort) + 'px';
+	}
+}
+
+/**
  * Play specified audio sample
  * @param audio
  */
@@ -856,22 +918,5 @@ function login() {
 		document.getElementById('button-container').style.display = 'block';
 		// Hide login
 		document.getElementById('login-container').style.display = 'none';
-	}
-}
-
-/**
- * Move avatars back to correct Y Position when window is resizing
- */
-function resetAvatarPosY() {
-	// const diff = window.innerHeight - client.oldWindowHeight;
-	// console.log(diff);
-
-	const container = document.getElementById('chat-avatar-container');
-	const children = container.children;
-
-	for (let i = 0; i < children.length; i++) {
-		const avatar = children[i];
-		const sort = i*0.25;
-		avatar.style.top = getAvatarPosY(sort) + 'px';
 	}
 }
