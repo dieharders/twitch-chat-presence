@@ -268,8 +268,8 @@ a {
     image-rendering: pixelated; 				/* Chrome */
     image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
-	background-repeat: no-repeat;
-	background-size: 100%;
+	/* background-repeat: no-repeat; */
+	background-size: cover;
 	transition: inherit;
 	-webkit-transition: inherit;
 	-moz-transition: inherit;

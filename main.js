@@ -3,10 +3,14 @@
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
 // TODO: Add sprite animations to avatars
+// TODO: Fix chatInfo and viewers menus not taking 100% height when <600px wide in portrait (on Chrome only).
+// TODO: Fixe move anim not starting when moving in same dir successively.
 
 // TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
+// TODO: Add users to chat list if they post a message.
 // TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
-// TODO: Ability to change up/down sorting of messages
+// TODO: Ability to change up/down sorting of messages.
+// TODO: Sometimes avatars spawn super squished and dont move for awhile.
 
 /////////////////
 // Main Loop ////
@@ -28,16 +32,6 @@ SoundLeave.volume   = 0.7;
 const SoundMessage  = new Audio('assets/message.mp3');
 SoundMessage.volume = 0.025;
 
-// Sprites //
-const avatarSprites = 	[
-						'url(assets/avatar_01_mario_right.png)',
-						'url(assets/avatar_02_princess_right.png)',
-						'url(assets/avatar_03_bowser_right.png)',
-						'url(assets/avatar_04_koopa_right.png)',
-						'url(assets/avatar_05_kong_right.png)',
-						'url(assets/avatar_06_yoshi_right.png)',
-						'url(assets/avatar_07_toad_right.png)'
-						];
 // Chat Vars //
 var channels = [], 		 // Channels to initially join
 	fadeDelay = 10000,   // Set to false to disable chat fade
@@ -160,7 +154,12 @@ client.addListener('names', function (channel, users) {
 
 		// Dont add duplicate user
 		if (users[index] !== chatters[index]) {
-			addAvatar(users, index);
+			// Delay addition by random interval (also add anim offset)
+			const randInt = Math.random() * 1000 * 10;
+			setTimeout( () => {
+				addAvatar(users, index);
+			}, randInt);
+
 			s += e;
 		}
 		// Track duplicate users
@@ -663,20 +662,31 @@ function addAvatar(users, index) {
 	chatAvatar.id = `${user}-container`;
 	const avatarPosY = getAvatarPosY(zIndex);
 	chatAvatar.style.top = avatarPosY + 'px';
+    const windowWidthMin = 32; // Left screen bound
+    const windowWidthMax = window.innerWidth - client.avatarWidth - 32; // Right screen
+	const randX = Math.floor( Math.random() * (windowWidthMin + windowWidthMax) );
+	chatAvatar.style.left = `${randX}px`;
 	chatAvatar.style.zIndex = zIndex;
 	chatAvatar.setAttribute('zdepth', zIndex);
 	chatAvatar.setAttribute('index', index);
 
 	// Create avatar image
+	//
 	const chatAvatarImage = document.createElement('div');
 	chatAvatarImage.id = user;
 	chatAvatarImage.className = 'chat-avatar-image';
-	chatAvatarImage.facingDir = 1; // Right
+	chatAvatarImage.facingDir = 2; // Right (Default)
 	chatAvatarImage.style.width  = client.avatarWidth;
 	chatAvatarImage.style.height = client.avatarHeight;
 	chatAvatarImage.style.transform  = `scale(${chatAvatarImage.facingDir}, 2)`;
-	const randSpriteIndex = Math.floor(Math.random() * (avatarSprites.length - 1) );
-	chatAvatarImage.style.backgroundImage = avatarSprites[randSpriteIndex];
+	// Set sprite
+	//const randSpriteIndex = Math.floor(Math.random() * (avatarSprites.length - 1) );
+	//chatAvatarImage.style.backgroundImage = avatarSprites[randSpriteIndex];
+	const randSpriteName = 'mario';
+	chatAvatarImage.spriteName = randSpriteName;
+	//chatAvatarImage.style.backgroundImage = sprAnim_allAvatars.get(randSpriteName).get('move');
+	chatAvatarImage.classList.add(`anim-${randSpriteName}-idle`);
+	// Add sprite to avatar element
 	chatAvatar.appendChild(chatAvatarImage);
 	avatarsContainer.appendChild(chatAvatar);
 	// Add a name container to avatar
@@ -701,6 +711,7 @@ function addAvatar(users, index) {
 	const maxTime = 6000;
 	const randSecond = Math.floor(Math.random() * maxTime); // add 0-max sec
 	const randInterval = Math.min( maxTime, client.avatarMinUpdateInterval + randSecond );
+	chatAvatarImage.moveInterval = randInterval;
 
 	chatAvatarImage.updateInterval = setInterval(() => {
 		avatarMove(user);
@@ -750,13 +761,32 @@ function avatarMove(id) {
 	const positionAndFacing = getRandPosX(avatarImage);
 	const randX = positionAndFacing[0];
 	const facingDir = positionAndFacing[1] * scale;
+	const baseClass = 'chat-avatar-image'
+	const transitionDelay = 2;
+
+	// Set sprite to moving delay
+	avatarImage.turnTimeout = setTimeout( () => {
+		avatarImage.className = baseClass;
+		avatarImage.classList.add(`anim-mario-move`);
+	}, (0.2*1000) );
+	// Set anim to idle on move complete
+	const moveTimeoutInterval = transitionDelay*1000; // end of anim event
+	avatarImage.moveTimeout = setTimeout( () => {
+		avatarImage.className = baseClass;
+		avatarImage.classList.add(`anim-mario-idle`);
+	}, moveTimeoutInterval );
+	// Set sprite turning anim
+	if (avatarImage.facingDir !== facingDir) {
+		avatarImage.className = baseClass;
+		avatarImage.classList.add(`anim-mario-turn`);
+	}
 
 	// Set facing direction
 	avatarImage.facingDir = facingDir;
 	// Update avatar image
 	avatarImage.style.transform = `scale(${avatarImage.facingDir}, ${Math.abs(avatarImage.facingDir)})`;
 	// Update parent container
-	avatarContainer.style.transition = 'left 2s ease-in-out';
+	avatarContainer.style.transition = `left ${transitionDelay}s ease-in-out`;
 	avatarContainer.style.left = randX + 'px';
 
 	// Set message bubble position
@@ -776,6 +806,7 @@ function avatarMove(id) {
 
 /**
  * Get a random X position on screen
+ * @param {HTMLElement} container
  */
 function getRandPosX(container) {
 	let pos;

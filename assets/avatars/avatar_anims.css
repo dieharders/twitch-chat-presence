@@ -1,0 +1,42 @@
+/* Mario */
+.anim-mario-idle {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('mario/avatar_mario_idle.png');
+    animation-name: mario-idle;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+}
+@keyframes mario-idle {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(64px*2); } /* (SpriteWidth * scale) */
+}
+
+.anim-mario-move {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('mario/avatar_mario_move.png');
+    animation-name: mario-move;
+    animation-duration: 0.15s;
+    animation-timing-function: steps(4);
+    animation-iteration-count: infinite;
+}
+@keyframes mario-move {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(128px*2); }
+}
+
+.anim-mario-turn {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('mario/avatar_mario_turn.png');
+    animation-name: mario-turn;
+    animation-duration: 0.2s;
+    animation-timing-function: steps(9);
+    animation-iteration-count: infinite;
+}
+@keyframes mario-turn {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(288px*2); }
+}
