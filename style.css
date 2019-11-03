@@ -95,13 +95,14 @@ input[type=text], select {
 	right: 1em;
 	top: 1em;
 	opacity: 0.25;
-	padding: 6px;
+	padding: 10px;
 	height: 24px;
 	width: 24px;
 	z-index: 99;
 	border-style: solid;
 	border-radius: 24px;
-	border-width: 2px;
+	border-width: 4px;
+	border-color: white;
 	background-color: white;
 	background-image: url('assets/icon-settings.svg');
 	background-size: cover;
@@ -110,6 +111,10 @@ input[type=text], select {
 }
 #settings-icon:hover {
 	opacity: 1;
+}
+
+.optionsHeader {
+	text-align: center;
 }
 
 #button-container {
@@ -122,6 +127,7 @@ input[type=text], select {
 	height: auto;
 	width: auto;
 	z-index: 100;
+	text-align: center;
 	background-color: hsl(248, 12%, 9%);
 	transition: opacity 0.5s ease-in-out;
 	-webkit-transition: opacity 0.5s ease-in-out;
@@ -335,23 +341,29 @@ a {
 }
 #sidebar {
 	display: grid;
-	grid-template-rows: 1fr 1fr;
-	grid-gap: 10px;
+	grid-template-rows: auto;
+	grid-template-columns: 1fr;
+	gap: 10px;
 	box-sizing: border-box;
 	width: 100%;
 	max-width: 500px;
-	min-width: 250px;
 	height: 100%;
 	margin: auto;
 	margin-right: 0;
 	padding: 10px;
 	z-index: 1;
 }
+	#sidebar[hide="true"] {
+		display: none;
+	}
+	#sidebar[no-chat="true"] {
+		max-height: none;
+	}
 #uber-chat {
 	box-sizing: border-box;
 	position: relative;
 	display: inline-block;
-	height: 100vh;
+	height: 100%;
 	width: 100%;
 	min-width: 300px;
 	margin: auto;
@@ -359,6 +371,7 @@ a {
 	overflow: hidden;
 	word-wrap: wrap;
 	overflow-y: auto;
+	flex-grow: 1;
 }
 
 /* Viewer List */
@@ -399,7 +412,7 @@ a {
 	box-sizing: border-box;
 	position: relative;
 	display: block;
-	width: auto;
+	width: 100%;
 	height: 100%;
 	padding: 0;
 	margin: auto;
@@ -703,4 +716,60 @@ a {
 }
 
 .chat-crash {
+}
+
+@media (max-width: 480px) {
+	#settings-icon {
+		top: 0.25em;
+		right: 0.25em;
+	}
+
+	#button-container {
+		top: 0.25em;
+		right: 0.25em;
+	}
+}
+
+@media all
+	and (max-width: 600px)
+	and (orientation: portrait) {
+
+	#container {
+		flex-direction: column;
+	}
+	#sidebar {
+		max-height: 50%;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr;
+		margin: auto;
+		max-width: none;
+		gap: 16px;
+	}
+	#sidebar[full="true"] {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+	}
+}
+
+@media all
+	and (max-height: 600px)
+	and (orientation: landscape) {
+
+	#sidebar {
+		grid-template-columns: 1fr 1fr;
+		max-width: none;
+	}
+	#sidebar[full="true"] {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media all
+	and (max-width: 800px)
+	and (orientation: landscape) {
+
+	#sidebar {
+		grid-template-columns: 1fr;
+		max-width: none;
+	}
 }

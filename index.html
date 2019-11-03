@@ -51,7 +51,7 @@
     <!-- Chat Messages -->
     <div id="uber-chat" class="scroller"></div>
     <!-- Chat stats & viewers -->
-    <div id="sidebar">
+    <div id="sidebar" hide="false" full="false" no-chat="false">
         <div id="chat">
             <div class="title">Chat Info</div>
             <div id="debug-list" class="scroller"></div>
@@ -67,11 +67,12 @@
 <!-- Chat Options Menu -->
 <div id="settings-icon"></div>
 <div id="button-container">
-    <button class="hideBtn" onclick="hideMenu('chat', this)" name="DEBUG" value="true"><div class="optionsContent">🔲 Hide DEBUG</div></button><br>
-    <button class="hideBtn" onclick="hideMenu('chatters', this)" name="VIEWERS" value="true"><div class="optionsContent">🔲 Hide VIEWERS</div></button><br>
-    <button class="hideBtn" onclick="hideMenu('uber-chat', this)" name="CHAT" value="true"><div class="optionsContent">🔲 Hide CHAT</div></button><br>
-    <button class="hideBtn" onclick="hideMenu('chat-avatar-container', this)" name="AVATARS" value="false"><div class="optionsContent">🔳 Show AVATARS</div></button><br>
-    <button class="hideBtn" onclick="muteMe(this)" value="false">🔊 MUTE</button>
+    <h3 class="optionsHeader">OPTIONS</h1>
+    <button id="button-hideChatInfo" class="hideBtn" onclick="hideMenu('chat', this)" name="DEBUG" value="true"><div class="optionsContent">🔲 Hide CHAT INFO</div></button><br>
+    <button id="button-hideViewers" class="hideBtn" onclick="hideMenu('chatters', this)" name="VIEWERS" value="true"><div class="optionsContent">🔲 Hide VIEWERS</div></button><br>
+    <button id="button-hideChat" class="hideBtn" onclick="hideMenu('uber-chat', this)" name="CHAT" value="true"><div class="optionsContent">🔲 Hide CHAT</div></button><br>
+    <button id="button-hideAvatars" class="hideBtn" onclick="hideMenu('chat-avatar-container', this)" name="AVATARS" value="false"><div class="optionsContent">🔳 Show AVATARS</div></button><br>
+    <button id="button-hideMute" class="hideBtn" onclick="muteMe(this)" value="false">🔊 MUTE</button>
 </div>
 <!-- /Chat Options Menu -->
 

@@ -2,7 +2,6 @@
 
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-// TODO: Make view resize for mobile screen
 // TODO: Add sprite animations to avatars
 
 // TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
@@ -876,21 +875,27 @@ function hideMenu(menuName, button) {
 	}
 
 	// If both viewers and debug windows hidden, expand chat window horizontally
-	const chattersMenu = document.getElementById('chatters');
-	const debugMenu = document.getElementById('chat');
+	const viewersButton = document.getElementById('button-hideViewers');
+	const chatInfoButton = document.getElementById('button-hideChatInfo');
+	const chatButton = document.getElementById('button-hideChat');
 	const sidebarMenu = document.getElementById('sidebar');
-	const chatMenu = document.getElementById('uber-chat');
-
-	if (chattersMenu.style.display === 'none' && debugMenu.style.display === 'none') {
-		sidebarMenu.style.display = 'none';
+	// Check if sidebar is hidden
+	if (viewersButton.getAttribute('value') === 'false' && chatInfoButton.getAttribute('value') === 'false') {
+		sidebarMenu.setAttribute('hide', 'true');
 	} else {
-		sidebarMenu.style.display = 'grid';
+		sidebarMenu.setAttribute('hide', 'false');
 	}
-
-	if (chattersMenu.style.display === 'none' || debugMenu.style.display === 'none') {
-		sidebarMenu.style.gridTemplateRows = '1fr';
+	// Check if chat menu is hidden
+	if ( chatButton.getAttribute('value') === 'false' ) {
+		sidebarMenu.setAttribute('no-chat', 'true');
 	} else {
-		sidebarMenu.style.gridTemplateRows = '1fr 1fr';
+		sidebarMenu.setAttribute('no-chat', 'false');
+	}
+	// Check if one of the menus in the sidebar is hidden
+	if ( viewersButton.getAttribute('value') !== chatInfoButton.getAttribute('value') ) {
+		sidebarMenu.setAttribute('full', 'true');
+	} else {
+		sidebarMenu.setAttribute('full', 'false');
 	}
 
 	// Change icon/text on buttons each press
