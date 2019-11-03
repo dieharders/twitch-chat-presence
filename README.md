@@ -1,9 +1,19 @@
 # Twitch: Chat Presence
-![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/assets/preview-1.jpg)
-![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/assets/preview-2.png)
+![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/source/preview-1.jpg)
 
 ## Info
+![Preview Chat](https://github.com/dieharders/twitch-chat-presence/blob/master/source/preview-2.png)
+
 There is no back-end required; Twitch provides all the chat/user information via the module `tmi.min.js`. The app simply styles the chat rooms in a way that provides the owner of the room some specific feedback.
+
+## How to use with OBS
+- Add a `Browser` source
+- Go to its properties and paste this code into the `Custom CSS` field:
+> #container {background-color: transparent;}
+> #settings-icon {opacity: 0;}
+- This will turn background elements transparent. Now it functions like an overlay.
+- Move/resize the source window as needed.
+
 
 ## Deploy Locally
 Just click on `index.html` to start.

@@ -4,7 +4,7 @@
     background-position-y: top;
     background-image: url('mario/avatar_mario_idle.png');
     animation-name: mario-idle;
-    animation-duration: 0.5s;
+    animation-duration: 0.25s;
     animation-timing-function: steps(2);
     animation-iteration-count: infinite;
 }
@@ -19,12 +19,12 @@
     background-image: url('mario/avatar_mario_move.png');
     animation-name: mario-move;
     animation-duration: 0.15s;
-    animation-timing-function: steps(4);
+    animation-timing-function: steps(3);
     animation-iteration-count: infinite;
 }
 @keyframes mario-move {
     0%   { background-position-x: 0px }
-    100% { background-position-x: calc(128px*2); }
+    100% { background-position-x: calc(96px*2); }
 }
 
 .anim-mario-turn {
@@ -37,6 +37,264 @@
     animation-iteration-count: infinite;
 }
 @keyframes mario-turn {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(288px*2); }
+}
+
+/* Bowser */
+.anim-bowser-idle {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('bowser/avatar_bowser_idle.png');
+    animation-name: bowser-idle;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+}
+@keyframes bowser-idle {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(64px*2); } /* (SpriteWidth * scale) */
+}
+
+.anim-bowser-move {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('bowser/avatar_bowser_move.png');
+    animation-name: bowser-move;
+    animation-duration: 0.15s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+}
+@keyframes bowser-move {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(96px*2); }
+}
+
+.anim-bowser-turn {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('bowser/avatar_bowser_turn.png');
+    animation-name: bowser-turn;
+    animation-duration: 0.2s;
+    animation-timing-function: steps(9);
+    animation-iteration-count: infinite;
+}
+@keyframes bowser-turn {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(288px*2); }
+}
+
+/* Kong */
+.anim-kong-idle {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('kong/avatar_kong_idle.png');
+    animation-name: kong-idle;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+}
+@keyframes kong-idle {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(64px*2); } /* (SpriteWidth * scale) */
+}
+
+.anim-kong-move {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('kong/avatar_kong_move.png');
+    animation-name: kong-move;
+    animation-duration: 0.15s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+}
+@keyframes kong-move {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(96px*2); }
+}
+
+.anim-kong-turn {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('kong/avatar_kong_turn.png');
+    animation-name: kong-turn;
+    animation-duration: 0.2s;
+    animation-timing-function: steps(9);
+    animation-iteration-count: infinite;
+}
+@keyframes kong-turn {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(288px*2); }
+}
+
+/* Koopa */
+.anim-koopa-idle {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('koopa/avatar_koopa_idle.png');
+    animation-name: koopa-idle;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+}
+@keyframes koopa-idle {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(64px*2); } /* (SpriteWidth * scale) */
+}
+
+.anim-koopa-move {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('koopa/avatar_koopa_move.png');
+    animation-name: koopa-move;
+    animation-duration: 0.15s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+}
+@keyframes koopa-move {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(96px*2); }
+}
+
+.anim-koopa-turn {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('koopa/avatar_koopa_turn.png');
+    animation-name: koopa-turn;
+    animation-duration: 0.2s;
+    animation-timing-function: steps(9);
+    animation-iteration-count: infinite;
+}
+@keyframes koopa-turn {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(288px*2); }
+}
+
+/* Princess */
+.anim-princess-idle {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('princess/avatar_princess_idle.png');
+    animation-name: princess-idle;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+}
+@keyframes princess-idle {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(64px*2); } /* (SpriteWidth * scale) */
+}
+
+.anim-princess-move {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('princess/avatar_princess_move.png');
+    animation-name: princess-move;
+    animation-duration: 0.15s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+}
+@keyframes princess-move {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(96px*2); }
+}
+
+.anim-princess-turn {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('princess/avatar_princess_turn.png');
+    animation-name: princess-turn;
+    animation-duration: 0.2s;
+    animation-timing-function: steps(9);
+    animation-iteration-count: infinite;
+}
+@keyframes princess-turn {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(288px*2); }
+}
+
+/* Toad */
+.anim-toad-idle {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('toad/avatar_toad_idle.png');
+    animation-name: toad-idle;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+}
+@keyframes toad-idle {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(64px*2); } /* (SpriteWidth * scale) */
+}
+
+.anim-toad-move {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('toad/avatar_toad_move.png');
+    animation-name: toad-move;
+    animation-duration: 0.15s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+}
+@keyframes toad-move {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(96px*2); }
+}
+
+.anim-toad-turn {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('toad/avatar_toad_turn.png');
+    animation-name: toad-turn;
+    animation-duration: 0.2s;
+    animation-timing-function: steps(9);
+    animation-iteration-count: infinite;
+}
+@keyframes toad-turn {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(288px*2); }
+}
+
+/* Yoshi */
+.anim-yoshi-idle {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('yoshi/avatar_yoshi_idle.png');
+    animation-name: yoshi-idle;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+}
+@keyframes yoshi-idle {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(64px*2); } /* (SpriteWidth * scale) */
+}
+
+.anim-yoshi-move {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('yoshi/avatar_yoshi_move.png');
+    animation-name: yoshi-move;
+    animation-duration: 0.15s;
+    animation-timing-function: steps(3);
+    animation-iteration-count: infinite;
+}
+@keyframes yoshi-move {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: calc(96px*2); }
+}
+
+.anim-yoshi-turn {
+    background-position-x: left;
+    background-position-y: top;
+    background-image: url('yoshi/avatar_yoshi_turn.png');
+    animation-name: yoshi-turn;
+    animation-duration: 0.2s;
+    animation-timing-function: steps(9);
+    animation-iteration-count: infinite;
+}
+@keyframes yoshi-turn {
     0%   { background-position-x: 0px }
     100% { background-position-x: calc(288px*2); }
 }

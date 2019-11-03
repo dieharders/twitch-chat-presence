@@ -30,6 +30,30 @@ h4 {
 	margin-bottom: 2px;
 }
 
+button {
+	text-decoration: none;
+	border: none;
+	outline: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+a {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+	text-decoration: none;
+	border: none;
+	outline: none;
+	color: initial;
+
+	font-size: 11pt;
+	text-align: center;
+}
+
 p {
 	font-size: 16pt;
 	text-align: center;
@@ -177,18 +201,6 @@ input[type=text], select {
 	position: relative;
 	margin: 2px;
 	padding: 1px;
-}
-
-a {
-    -webkit-appearance: button;
-    -moz-appearance: button;
-    appearance: button;
-
-    text-decoration: none;
-	color: initial;
-
-	font-size: 11pt;
-	text-align: center;
 }
 
 .disable-css-transitions {

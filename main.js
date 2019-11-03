@@ -2,9 +2,6 @@
 
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-// TODO: Add sprite animations to avatars. Add rest of char sprites.
-// TODO: Fix menu alignments. CHat doesnt expand when sidebar hidden.
-
 // TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
 // TODO: Add users to chat list if they post a message.
 // TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
@@ -24,6 +21,9 @@ const SoundLeave    = new Audio('assets/leave.mp3');
 SoundLeave.volume   = 0.7;
 const SoundMessage  = new Audio('assets/message.mp3');
 SoundMessage.volume = 0.025;
+
+// Avatar sprite names (keys) //
+const spriteNames = ['mario', 'toad', 'bowser', 'kong', 'koopa', 'princess', 'yoshi'];
 
 // Chat Vars //
 let isChatScrollLocked = true;
@@ -686,11 +686,9 @@ function addAvatar(users, index) {
 	chatAvatarImage.style.height = client.avatarHeight;
 	chatAvatarImage.style.transform  = `scale(${chatAvatarImage.facingDir}, 2)`;
 	// Set sprite
-	//const randSpriteIndex = Math.floor(Math.random() * (avatarSprites.length - 1) );
-	//chatAvatarImage.style.backgroundImage = avatarSprites[randSpriteIndex];
-	const randSpriteName = 'mario';
+	const randSpriteIndex = Math.floor(Math.random() * (spriteNames.length - 1) );
+	const randSpriteName = spriteNames[randSpriteIndex];
 	chatAvatarImage.spriteName = randSpriteName;
-	//chatAvatarImage.style.backgroundImage = sprAnim_allAvatars.get(randSpriteName).get('move');
 	chatAvatarImage.classList.add(`anim-${randSpriteName}-idle`);
 	// Add sprite to avatar element
 	chatAvatar.appendChild(chatAvatarImage);
@@ -769,22 +767,23 @@ function avatarMove(id) {
 	const facingDir = positionAndFacing[1] * scale;
 	const baseClass = 'chat-avatar-image'
 	const transitionDelay = 2;
+	const spriteName = avatarImage.spriteName;
 
 	// Set sprite to moving delay
 	avatarImage.turnTimeout = setTimeout( () => {
 		avatarImage.className = baseClass;
-		avatarImage.classList.add(`anim-mario-move`);
+		avatarImage.classList.add(`anim-${spriteName}-move`);
 	}, (0.2*1000) );
 	// Set anim to idle on move complete
 	const moveTimeoutInterval = transitionDelay*1000; // end of anim event
 	avatarImage.moveTimeout = setTimeout( () => {
 		avatarImage.className = baseClass;
-		avatarImage.classList.add(`anim-mario-idle`);
+		avatarImage.classList.add(`anim-${spriteName}-idle`);
 	}, moveTimeoutInterval );
 	// Set sprite turning anim
 	if (avatarImage.facingDir !== facingDir) {
 		avatarImage.className = baseClass;
-		avatarImage.classList.add(`anim-mario-turn`);
+		avatarImage.classList.add(`anim-${spriteName}-turn`);
 	}
 
 	// Set facing direction
