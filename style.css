@@ -107,7 +107,7 @@ input[type=text], select {
 	border-width: 4px;
 	border-color: white;
 	background-color: white;
-	background-image: url('assets/icon-settings.svg');
+	background-image: url('assets/icon-settings-purp.svg');
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: 50%, 50%;
@@ -128,7 +128,7 @@ input[type=text], select {
 	top: 1em;
 	padding: 0;
 	height: 50px;
-	width: 75px;
+	width: 50px;
 	z-index: 100;
 	text-align: center;
 	background-color: hsl(248, 12%, 9%);
@@ -336,6 +336,9 @@ a {
 	height: 100%;
 	white-space: nowrap;
 	background-color: hsl(248, 12%, 13%);
+}
+#container[expand="true"] {
+	grid-template-columns: 1fr;
 }
 #sidebar {
 	display: grid;
@@ -745,6 +748,9 @@ a {
 		grid-template-columns: 1fr;
 		grid-template-rows: 50% 50%;
 	}
+	#container[expand="true"] {
+		grid-template-rows: 1fr;
+	}
 	#sidebar {
 		grid-template-columns: 1fr 1fr;
 		grid-template-rows: 1fr;
@@ -786,6 +792,9 @@ a {
 
 	#container {
 		grid-template-columns: 1fr 500px;
+	}
+	#container[expand="true"] {
+		grid-template-columns: 1fr;
 	}
 
 }

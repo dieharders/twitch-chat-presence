@@ -3,18 +3,13 @@
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
 // TODO: Add sprite animations to avatars. Add rest of char sprites.
+// TODO: Fix menu alignments. CHat doesnt expand when sidebar hidden.
 
 // TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
 // TODO: Add users to chat list if they post a message.
 // TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
 // TODO: Ability to change up/down sorting of messages.
 // TODO: Sometimes avatars spawn super squished and dont move for awhile.
-
-/////////////////
-// Main Loop ////
-/////////////////
-//
-window.onresize = handleWindowResizeEvent;
 
 /////////////////
 // Vars /////////
@@ -31,6 +26,7 @@ const SoundMessage  = new Audio('assets/message.mp3');
 SoundMessage.volume = 0.025;
 
 // Chat Vars //
+let isChatScrollLocked = true;
 var channels = [], 		 // Channels to initially join
 	fadeDelay = 10000,   // Set to false to disable chat fade
 	showChannel = true,  // Show respective channels if the channels is longer than 1
@@ -188,7 +184,7 @@ client.addListener('crash', function () {
 function handleWindowResizeEvent() {
 	resetAvatarPosY();
 	// Prevent scrollbar from unlocking.
-	lockChatScroll( document.getElementById('uber-chat') );
+	autoScrollChat( document.getElementById('uber-chat') );
 }
 
 /**
@@ -516,7 +512,7 @@ function handleChat(channel, user, message, self) {
 		for (var i in oldMessages) oldMessages[i].remove();
 	}
 
-	lockChatScroll(div);
+	autoScrollChat(div);
 
 	// Set the message on the avatar speech bubble
 	if (message.length > 0 && avatarMessageContainer) {
@@ -547,13 +543,25 @@ function handleChat(channel, user, message, self) {
 }
 
 /**
+ * Lock the chat menu element if user scrolls to bottom
+ */
+function handleChatScrollEvent() {
+	const element = this;
+	let scrollH = element.scrollTop + element.offsetHeight;
+
+	if (scrollH >= element.scrollHeight || element.offsetHeight == element.scrollHeight) {
+		isChatScrollLocked = true;
+	} else {
+		isChatScrollLocked = false;
+	}
+}
+
+/**
  * Auto Scroll to bottom of page if already at bottom
  * @param {HTMLElement} element
  */
-function lockChatScroll(element) {
-	let scrollH = (element.scrollTop + element.offsetHeight)+120;
-	if (scrollH >= element.scrollHeight || element.offsetHeight == element.scrollHeight)
-	{
+function autoScrollChat(element) {
+	if (isChatScrollLocked) {
 		element.scrollTo(0, element.scrollHeight);
 	}
 }
@@ -902,11 +910,13 @@ function hideMenu(menuName, button) {
 		button.value = 'false';
 	}
 
-	// If both viewers and debug windows hidden, expand chat window horizontally
+	// Checks to expand menus. Set attributes so we can select them in CSS for styling.
 	const viewersButton = document.getElementById('button-hideViewers');
 	const chatInfoButton = document.getElementById('button-hideChatInfo');
 	const chatButton = document.getElementById('button-hideChat');
 	const sidebarMenu = document.getElementById('sidebar');
+	const mainContainer = document.getElementById('container');
+
 	// Check if sidebar is hidden
 	if (viewersButton.getAttribute('value') === 'false' && chatInfoButton.getAttribute('value') === 'false') {
 		sidebarMenu.setAttribute('hide', 'true');
@@ -924,6 +934,12 @@ function hideMenu(menuName, button) {
 		sidebarMenu.setAttribute('full', 'true');
 	} else {
 		sidebarMenu.setAttribute('full', 'false');
+	}
+	// Check if either chat or sidebar is hidden
+	if ( (viewersButton.getAttribute('value') === 'false' && chatInfoButton.getAttribute('value') === 'false') || chatButton.getAttribute('value') === 'false' ) {
+		mainContainer.setAttribute('expand', 'true');
+	} else {
+		mainContainer.setAttribute('expand', 'false');
 	}
 
 	// Change icon/text on buttons each press
@@ -968,3 +984,10 @@ function login() {
 		document.getElementById('login-container').style.display = 'none';
 	}
 }
+
+/////////////////
+// Main Loop ////
+/////////////////
+//
+window.onresize = handleWindowResizeEvent;
+document.getElementById('uber-chat').onscroll = handleChatScrollEvent;

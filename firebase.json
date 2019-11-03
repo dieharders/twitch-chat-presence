@@ -9,7 +9,11 @@
       "README.md",
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "**/source/**",
+      ".eslintrc.json",
+      "package.json",
+      "package-lock.json"
     ],
     "rewrites": [
       {
