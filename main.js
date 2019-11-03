@@ -2,9 +2,7 @@
 
 //** Forked from: https://gist.github.com/AlcaDesign/742d8cb82e3e93ad4205 **//
 
-// TODO: Add sprite animations to avatars
-// TODO: Fix chatInfo and viewers menus not taking 100% height when <600px wide in portrait (on Chrome only).
-// TODO: Fixe move anim not starting when moving in same dir successively.
+// TODO: Add sprite animations to avatars. Add rest of char sprites.
 
 // TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
 // TODO: Add users to chat list if they post a message.
