@@ -960,8 +960,8 @@ function login() {
 		client.connect();
 
 		// Show App
-		document.getElementById('container').style.display = 'flex';
-		document.getElementById('container').style.display = '-webkit-flex';
+		document.getElementById('container').style.display = 'grid';
+		// document.getElementById('container').style.display = '-webkit-flex';
 		document.getElementById('button-container').style.display = 'block';
 		document.getElementById('settings-icon').style.display = 'block';
 		// Hide login
