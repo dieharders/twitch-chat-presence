@@ -60,6 +60,7 @@ p {
 #login {
 	display: block;
 	position: relative;
+	box-sizing: border-box;
 	height: auto;
 	width: 75%;
 	max-width: 650px;
@@ -85,8 +86,10 @@ input[type=text], select {
 	box-sizing: border-box;
 	width: 100%;
 	padding: 12px;
+	margin: auto;
 	background-color: hsl(248, 12%, 9%);
 	border-radius: 4px;
+	text-align: center;
 }
 
 #settings-icon {
@@ -730,6 +733,17 @@ a {
 	}
 }
 
+@media all
+	and (max-width: 600px) {
+
+	#login {
+		width: 100%;
+		padding: 12px;
+	}
+	.join-menu-container {
+		width: 100%;
+	}
+}
 @media all
 	and (max-width: 600px)
 	and (orientation: portrait) {

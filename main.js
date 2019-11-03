@@ -7,7 +7,6 @@
 // TODO: Port to new `Twitch API` https://dev.twitch.tv/docs/api
 // TODO: Add timeout to recently joined name color. Remove recently left user names on timeout.
 // TODO: Ability to change up/down sorting of messages
-// TODO: Add buttons to menus for stretching/shrinking size
 
 /////////////////
 // Main Loop ////
