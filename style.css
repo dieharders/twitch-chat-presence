@@ -126,24 +126,18 @@ input[type=text], select {
 	position: absolute;
 	right: 1em;
 	top: 1em;
-	padding: 10px;
-	height: auto;
-	width: auto;
+	padding: 0;
+	height: 50px;
+	width: 50px;
 	z-index: 100;
 	text-align: center;
 	background-color: hsl(248, 12%, 9%);
-	transition: opacity 0.5s ease-in-out;
-	-webkit-transition: opacity 0.5s ease-in-out;
-	-moz-transition: opacity 0.5s ease-in-out;
-	-ms-transition: opacity 0.5s ease-in-out;
-	-o-transition: opacity 0.5s ease-in-out;
+	overflow: hidden;
 }
 #button-container:hover {
-	transition: opacity 0.5s ease-in-out;
-	-webkit-transition: opacity 0.5s ease-in-out;
-	-moz-transition: opacity 0.5s ease-in-out;
-	-ms-transition: opacity 0.5s ease-in-out;
-	-o-transition: opacity 0.5s ease-in-out;
+	height: auto;
+	width: auto;
+	padding: 10px;
 	opacity: 1;
 }
 
