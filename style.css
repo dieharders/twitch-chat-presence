@@ -128,7 +128,7 @@ input[type=text], select {
 	top: 1em;
 	padding: 0;
 	height: 50px;
-	width: 50px;
+	width: 75px;
 	z-index: 100;
 	text-align: center;
 	background-color: hsl(248, 12%, 9%);
@@ -176,7 +176,7 @@ input[type=text], select {
 	display: inline;
 	position: relative;
 	margin: 2px;
-	padding: 2px;
+	padding: 1px;
 }
 
 a {
